@@ -218,87 +218,253 @@
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">아침</h3>
-                            </div>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
-                            </div>
-                            <ul class="space-y-3">
-                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-slate-800 dark:text-slate-200">계란 후라이</p>
-                                        <p class="text-sm text-slate-500 dark:text-slate-400">2개, 180 kcal</p>
+                    <div class="flex flex-col gap-6">
+                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">아침</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
                                     </div>
-                                    <div class="flex gap-2">
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <div>
+                                                <p class="font-medium text-slate-800 dark:text-slate-200">계란 후라이</p>
+                                                <p class="text-sm text-slate-500 dark:text-slate-400">2개, 180 kcal</p>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <div>
+                                                <p class="font-medium text-slate-800 dark:text-slate-200">통밀빵</p>
+                                                <p class="text-sm text-slate-500 dark:text-slate-400">2조각, 160 kcal</p>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">아침 식사 영양 상세</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">340 kcal</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
+                                            <span class="font-bold text-carb">35 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
+                                            <span class="font-bold text-protein">18 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
+                                            <span class="font-bold text-fat">14 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">3 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">4 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">420 mg</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">370 mg</span>
+                                        </div>
                                     </div>
-                                </li>
-                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-slate-800 dark:text-slate-200">통밀빵</p>
-                                        <p class="text-sm text-slate-500 dark:text-slate-400">2조각, 160 kcal</p>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="border-t border-slate-200 dark:border-slate-700 pt-4 mt-2 text-right">
-                                <p class="text-slate-800 dark:text-slate-200 font-bold">합계: <span class="text-primary">340</span> kcal</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">점심</h3>
-                            </div>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
-                            </div>
-                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
-                                <p>점심 식사 기록이 없습니다.</p>
+                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">점심</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                                    </div>
+                                    <div class="text-center py-6 text-slate-500 dark:text-slate-400 flex-1 flex items-center justify-center">
+                                        <p>점심 식사 기록이 없습니다.</p>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">점심 식사 영양 상세</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-xs opacity-50">
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 kcal</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
+                                            <span class="font-bold text-carb">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
+                                            <span class="font-bold text-protein">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
+                                            <span class="font-bold text-fat">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">저녁</h3>
-                            </div>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
-                            </div>
-                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
-                                <p>저녁 식사 기록이 없습니다.</p>
+                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">저녁</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                                    </div>
+                                    <div class="text-center py-6 text-slate-500 dark:text-slate-400 flex-1 flex items-center justify-center">
+                                        <p>저녁 식사 기록이 없습니다.</p>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">저녁 식사 영양 상세</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-xs opacity-50">
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 kcal</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
+                                            <span class="font-bold text-carb">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
+                                            <span class="font-bold text-protein">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
+                                            <span class="font-bold text-fat">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">간식</h3>
-                            </div>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
-                            </div>
-                            <ul class="space-y-3">
-                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-slate-800 dark:text-slate-200">아몬드</p>
-                                        <p class="text-sm text-slate-500 dark:text-slate-400">한 줌 (30g), 170 kcal</p>
+                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">간식</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
                                     </div>
-                                    <div class="flex gap-2">
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <div>
+                                                <p class="font-medium text-slate-800 dark:text-slate-200">아몬드</p>
+                                                <p class="text-sm text-slate-500 dark:text-slate-400">한 줌 (30g), 170 kcal</p>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">간식 영양 상세</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">170 kcal</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
+                                            <span class="font-bold text-carb">6 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
+                                            <span class="font-bold text-protein">6 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
+                                            <span class="font-bold text-fat">14 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">1 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">1 g</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
+                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        </div>
                                     </div>
-                                </li>
-                            </ul>
-                            <div class="border-t border-slate-200 dark:border-slate-700 pt-4 mt-2 text-right">
-                                <p class="text-slate-800 dark:text-slate-200 font-bold">합계: <span class="text-primary">170</span> kcal</p>
+                                </div>
                             </div>
                         </div>
                     </div>

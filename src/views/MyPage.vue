@@ -278,10 +278,6 @@ import {
 const userStore = useUserStore();
 const member = computed(() => userStore.member || {});
 
-const formattedBirthDate = computed(() => member.value.birthDate || '');
-const formattedHeight = computed(() => (member.value.heightCm ? `${member.value.heightCm} cm` : ''));
-const formattedWeight = computed(() => (member.value.weightKg ? `${member.value.weightKg} kg` : ''));
-
 const verifyPassword = ref('');
 const isVerified = ref(false);
 const loadingVerify = ref(false);
