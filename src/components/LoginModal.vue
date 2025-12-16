@@ -45,8 +45,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import { useUserStore } from '@/stores/userStore';
+import { login } from '@/services/memberService';
 
 const email = ref('');
 const password = ref('');
@@ -55,21 +55,21 @@ const router = useRouter();
 
 const handleLogin = async () => {
   try {
-    const response = await axios.post('/api/auth/login', {
+    const response = await login({
       email: email.value,
       password: password.value,
     });
 
     // 예: 응답에서 token과 user 정보가 함께 온다고 가정
-    const { token, user } = response.data;
+    const { tokenType = 'Bearer', accessToken, member } = response.data;
 
-    userStore.saveUser({ token, user });
+    userStore.saveUser({ tokenType, accessToken, member });
 
     router.push('/dashboard');
     emitClose();
   } catch (err) {
-    alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
     console.error(err);
+    alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
   }
 };
 

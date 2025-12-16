@@ -9,8 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/forms": "^0.5.10",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
     "jwt-decode": "^4.0.0",
@@ -19,6 +17,8 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.10",
     "@vitejs/plugin-vue": "^6.0.1",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",

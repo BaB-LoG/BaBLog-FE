@@ -66,9 +66,9 @@
 
 <script setup>
 import { reactive } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
+import { signup, login } from '@/services/memberService';
 
 const emit = defineEmits(['close']);
 const router = useRouter();
@@ -86,17 +86,17 @@ const form = reactive({
 
 const handleSignUp = async () => {
   try {
-    // 1. 회원가입 요청
-    await axios.post('/api/auth/signup', form);
+    // 1. 회원가입 요청 (필수: email, password, name, gender)
+    await signup(form);
 
     // 2. 자동 로그인 (회원가입 후 바로 로그인)
-    const loginRes = await axios.post('/api/auth/login', {
+    const loginRes = await login({
       email: form.email,
       password: form.password,
     });
 
-    const { token, user } = loginRes.data;
-    userStore.saveUser({ token, user });
+    const { tokenType = 'Bearer', accessToken, member } = loginRes.data;
+    userStore.saveUser({ tokenType, accessToken, member });
 
     router.push('/dashboard');
     emit('close');
