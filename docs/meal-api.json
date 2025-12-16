@@ -1,0 +1,209 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "publicEndpoints": [],
+  "auth": {
+    "type": "bearer",
+    "header": "Authorization",
+    "format": "Bearer <token>"
+  },
+  "protectedEndpoints": [
+    {
+      "name": "오늘의 식단 생성(테스트용 API)",
+      "method": "POST",
+      "path": "/meals/test-api",
+      "request": null,
+      "response": null
+    },
+    {
+      "name": "식단 음식 추가",
+      "method": "POST",
+      "path": "/meals/foods",
+      "request": {
+        "mealType": "BREAKFAST",
+        "mealDate": "2025-12-12",
+        "foodId": 1,
+        "quantity": 1,
+        "unit": "그릇"
+      },
+      "required": ["mealType", "mealDate", "foodId", "quantity", "unit"],
+      "response": {
+        "meal": {
+          "id": 10,
+          "mealType": "BREAKFAST",
+          "mealDate": "2025-12-12",
+          "nutrition": {
+            "kcal": 1233,
+            "protein": 60.3,
+            "fat": 46.44,
+            "saturatedFat": 13.23,
+            "transFat": 0.27,
+            "carbohydrates": 143.46,
+            "sugar": 1.44,
+            "natrium": 1629,
+            "cholesterol": 214.38
+          },
+          "foods": null
+        },
+        "mealFood": {
+          "mealId": 10,
+          "foodId": 1,
+          "mealFoodId": 4,
+          "standard": 100,
+          "name": "국밥_돼지머리",
+          "quantity": 1,
+          "unit": "그릇",
+          "kcal": 1233,
+          "protein": 60.3,
+          "fat": 46.44,
+          "carbohydrates": 143.46,
+          "sugar": 1.44,
+          "natrium": 1629,
+          "cholesterol": 214.38,
+          "saturatedFat": 13.23,
+          "transFat": 0.27,
+          "vendor": "해당없음"
+        }
+      }
+    },
+    {
+      "name": "식단 음식 제거",
+      "method": "DELETE",
+      "path": "/meals/foods/{mealFoodId}",
+      "request": null,
+      "response": null
+    },
+    {
+      "name": "식단 음식 수정",
+      "method": "PATCH",
+      "path": "/meals/foods/{mealFoodId}",
+      "request": {
+        "mealId": 1,
+        "foodId": 1,
+        "quantity": 1,
+        "unit": "그릇"
+      },
+      "required": ["mealId", "foodId", "quantity", "unit"],
+      "response": {
+        "id": 1,
+        "mealType": "BREAKFAST",
+        "mealDate": "2025-12-16",
+        "nutrition": {
+          "kcal": 0,
+          "protein": 0,
+          "fat": 0,
+          "saturatedFat": 0,
+          "transFat": 0,
+          "carbohydrates": 0,
+          "sugar": 0,
+          "natrium": 0,
+          "cholesterol": 0
+        },
+        "foods": [
+          {
+            "mealId": 0,
+            "foodId": 0,
+            "mealFoodId": 0,
+            "standard": 0,
+            "name": "string",
+            "quantity": 0,
+            "unit": "string",
+            "kcal": 0,
+            "protein": 0,
+            "fat": 0,
+            "carbohydrates": 0,
+            "sugar": 0,
+            "natrium": 0,
+            "cholesterol": 0,
+            "saturatedFat": 0,
+            "transFat": 0,
+            "vendor": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "영양소 계산",
+      "method": "POST",
+      "path": "/meals/nutrient",
+      "request": null,
+      "response": null
+    },
+    {
+      "name": "날짜별 식단 조회",
+      "method": "GET",
+      "path": "/meals/{date}",
+      "request": null,
+      "response": {
+        "meal": {
+          "id": 10,
+          "mealType": "BREAKFAST",
+          "mealDate": "2025-12-12",
+          "nutrition": {
+            "kcal": 1233,
+            "protein": 60.3,
+            "fat": 46.44,
+            "saturatedFat": 13.23,
+            "transFat": 0.27,
+            "carbohydrates": 143.46,
+            "sugar": 1.44,
+            "natrium": 1629,
+            "cholesterol": 214.38
+          },
+          "foods": null
+        },
+        "mealFood": {
+          "mealId": 10,
+          "foodId": 1,
+          "mealFoodId": 4,
+          "standard": 100,
+          "name": "국밥_돼지머리",
+          "quantity": 1,
+          "unit": "그릇",
+          "kcal": 1233,
+          "protein": 60.3,
+          "fat": 46.44,
+          "carbohydrates": 143.46,
+          "sugar": 1.44,
+          "natrium": 1629,
+          "cholesterol": 214.38,
+          "saturatedFat": 13.23,
+          "transFat": 0.27,
+          "vendor": "해당없음"
+        }
+      }
+    },
+    {
+      "name": "식단 단일 조회",
+      "method": "GET",
+      "path": "/meals/{mealId}",
+      "request": null,
+      "response": {
+        "id": 10,
+        "mealType": "BREAKFAST",
+        "mealDate": "2025-12-12",
+        "nutrition": null,
+        "foods": [
+          {
+            "mealId": 10,
+            "foodId": 1,
+            "mealFoodId": 4,
+            "standard": 100,
+            "name": "국밥_돼지머리",
+            "quantity": 1,
+            "unit": "그릇",
+            "kcal": 1233,
+            "protein": 60.3,
+            "fat": 46.44,
+            "carbohydrates": 143.46,
+            "sugar": 1.44,
+            "natrium": 1629,
+            "cholesterol": 214.38,
+            "saturatedFat": 13.23,
+            "transFat": 0.27,
+            "vendor": "해당없음"
+          }
+        ]
+      }
+    }
+  ]
+}
