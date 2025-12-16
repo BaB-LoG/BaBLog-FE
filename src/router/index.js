@@ -8,6 +8,7 @@ import DashboardPage from '@/views/DashboardPage.vue';
 import MealLogPage from '@/views/MealLogPage.vue';
 import ReportsPage from '@/views/ReportsPage.vue';
 import GoalsPage from '@/views/GoalsPage.vue';
+import MyPage from '@/views/MyPage.vue';
 
 const routes = [
   {
@@ -67,6 +68,18 @@ const routes = [
         path: '',
         name: 'goals',
         component: GoalsPage,
+      },
+    ],
+  },
+  {
+    path: '/mypage',
+    component: DashboardLayout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'mypage',
+        component: MyPage,
       },
     ],
   },

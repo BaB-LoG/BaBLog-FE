@@ -40,9 +40,12 @@
           <span>목표 설정</span>
         </router-link>
       </nav>
-      <div class="mt-auto">
-        <hr>
-        <div class="flex items-center gap-3 rounded-lg px-3 py-3">
+      <div class="relative mt-auto pt-2" ref="profileArea">
+        <button
+          type="button"
+          class="flex w-full items-center gap-3 rounded-lg border border-transparent px-3 py-3 text-left transition hover:border-primary hover:bg-primary/5"
+          @click="toggleUserMenu"
+        >
           <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
@@ -50,6 +53,27 @@
             <span class="text-sm font-semibold text-text-light dark:text-text-dark">{{ displayName }}</span>
             <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">{{ displayEmail }}</span>
           </div>
+        </button>
+        <div
+          v-if="showUserMenu"
+          class="absolute bottom-16 left-0 w-full rounded-lg border border-border-light bg-card-light p-2 shadow-lg dark:border-border-dark dark:bg-card-dark z-10"
+        >
+          <button
+            type="button"
+            class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-text-light transition hover:bg-primary/10 dark:text-text-dark"
+            @click="goToMyPage"
+          >
+            <span class="material-symbols-outlined text-base">account_circle</span>
+            마이 페이지
+          </button>
+          <button
+            type="button"
+            class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-text-light transition hover:bg-primary/10 dark:text-text-dark"
+            @click="handleLogout"
+          >
+            <span class="material-symbols-outlined text-base">logout</span>
+            로그아웃
+          </button>
         </div>
       </div>
     </aside>
@@ -60,12 +84,45 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 
 const userStore = useUserStore();
+const router = useRouter();
+const showUserMenu = ref(false);
+const profileArea = ref(null);
 
 // 사용자 정보가 없을 때도 깔끔한 플레이스홀더를 보여줍니다.
 const displayName = computed(() => userStore.member?.name || '사용자');
 const displayEmail = computed(() => userStore.member?.email || 'email@example.com');
+
+const goToMyPage = () => {
+  router.push('/mypage');
+};
+
+const toggleUserMenu = () => {
+  showUserMenu.value = !showUserMenu.value;
+};
+
+const handleOutsideClick = (event) => {
+  if (!profileArea.value) return;
+  if (!profileArea.value.contains(event.target)) {
+    showUserMenu.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleOutsideClick);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleOutsideClick);
+});
+
+const handleLogout = () => {
+  userStore.logout();
+  showUserMenu.value = false;
+  router.push('/');
+};
 </script>
