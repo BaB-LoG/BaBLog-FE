@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="light" lang="ko"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>냠냠코치 - 식단 기록</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400,700&amp;FILL=0&amp;display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "background-light": "#f4f6f8",
+                        "background-dark": "#102213",
+                        "carb": "#ffc107",
+                        "protein": "#f44336",
+                        "fat": "#2196f3",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans KR", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+    <div class="flex h-full w-full">
+        <aside class="w-64 flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 hidden lg:flex">
+            <div class="flex items-center gap-3 px-6 h-16 border-b border-slate-200 dark:border-slate-800">
+                <div class="size-8 text-primary">
+                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4C12.9543 4 4 7.58172 4 12C4 16.4183 12.9543 20 24 20C35.0457 20 44 16.4183 44 12C44 7.58172 35.0457 4 24 4Z" fill="currentColor" opacity="0.5"></path>
+                        <path d="M4 24C4 28.4183 12.9543 32 24 32C35.0457 32 44 28.4183 44 24C44 19.5817 35.0457 16 24 16C12.9543 16 4 19.5817 4 24Z" fill="currentColor"></path>
+                        <path d="M24 44C35.0457 44 44 40.4183 44 36C44 31.5817 35.0457 28 24 28C12.9543 28 4 31.5817 4 36C4 40.4183 12.9543 44 24 44Z" fill="currentColor" opacity="0.5"></path>
+                        <path d="M29 23C29 25.7614 26.7614 28 24 28C21.2386 28 19 25.7614 19 23C19 20.2386 21.2386 18 24 18C26.7614 18 29 20.2386 29 23Z" fill="#FFFFFF"></path>
+                    </svg>
+                </div>
+                <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">냠냠코치</h2>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">dashboard</span>
+                    <span>대시보드</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-primary bg-primary/10 dark:bg-primary/20 text-sm font-bold" href="#">
+                    <span class="material-symbols-outlined text-base">edit_calendar</span>
+                    <span>식단 기록</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">flag</span>
+                    <span>목표 설정</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">menu_book</span>
+                    <span>레시피</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">groups</span>
+                    <span>커뮤니티</span>
+                </a>
+            </nav>
+            <div class="px-4 py-6 mt-auto">
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">settings</span>
+                    <span>설정</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium" href="#">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    <span>로그아웃</span>
+                </a>
+            </div>
+        </aside>
+        <div class="flex flex-1 flex-col">
+            <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-700 px-6 py-3 bg-white dark:bg-slate-900 sticky top-0 z-10 lg:h-16">
+                <div class="flex items-center gap-4 text-slate-800 dark:text-slate-200">
+                    <button class="lg:hidden text-slate-600 dark:text-slate-300">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <p class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">식단 기록</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAz1iMc2F3X2VmlbwiQSM8FZUDhmy2yqoFcHEHJ-CD4UPxTIkVJp1MX87c6OypvM-lVvfShbBAUyMDf0wB2oyWY0XHm8f46K8O8HpoGlJPvI0iGS2KXly6TfqIIN-CJY2HYYNfoghUStoEXjaQtQw41C98bMG9W-xkDKqJqKd7obkR5g2vPe2yL6gmVv3plfl9MCv0K63QN5M7U-d_nxAQaIXAfEa7IrJFRTlCW8sOaTsH-BkYwyjcQwe_-y0xZ0b01-mBb70D1QTM");'></div>
+                </div>
+            </header>
+            <main class="px-4 md:px-10 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col max-w-6xl flex-1 gap-6">
+                    <div class="flex flex-col md:flex-row md:flex-wrap md:justify-between gap-4 md:items-center">
+                        <p class="text-slate-900 dark:text-slate-100 text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">오늘의 식단 기록</p>
+                        <div class="flex">
+                            <div class="flex h-10 items-center justify-center rounded-lg bg-white dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700 w-full md:w-auto">
+                                <button class="flex items-center justify-center h-full px-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <span class="text-slate-800 dark:text-slate-200 text-sm font-medium">2023년 10월 26일</span>
+                                <button class="flex items-center justify-center h-full px-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                                <button class="flex items-center justify-center h-full px-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 border-l border-slate-200 dark:border-slate-700">
+                                    <span class="material-symbols-outlined">calendar_month</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                        <h2 class="text-slate-900 dark:text-slate-100 text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">오늘의 영양 요약</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-6 justify-between items-baseline">
+                                    <p class="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal">총 칼로리</p>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">510 / 2200 kcal</p>
+                                </div>
+                                <div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2.5"><div class="h-2.5 rounded-full bg-primary" style="width: 23%;"></div></div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-6 justify-between items-baseline">
+                                    <p class="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal">탄수화물</p>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">55 / 300 g</p>
+                                </div>
+                                <div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2.5"><div class="h-2.5 rounded-full bg-carb" style="width: 18%;"></div></div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-6 justify-between items-baseline">
+                                    <p class="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal">단백질</p>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">25 / 150 g</p>
+                                </div>
+                                <div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2.5"><div class="h-2.5 rounded-full bg-protein" style="width: 17%;"></div></div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="flex gap-6 justify-between items-baseline">
+                                    <p class="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal">지방</p>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">22 / 70 g</p>
+                                </div>
+                                <div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2.5"><div class="h-2.5 rounded-full bg-fat" style="width: 31%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                        <h2 class="text-slate-900 dark:text-slate-100 text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">종합 식단 평가</h2>
+                        <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                            <div class="flex-shrink-0 flex flex-col items-center gap-2 w-full md:w-32">
+                                <div class="relative size-24">
+                                    <svg class="size-full" viewBox="0 0 100 100">
+                                        <circle class="text-slate-200 dark:text-slate-700" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-width="10"></circle>
+                                        <circle class="text-primary" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-linecap="round" stroke-width="10" style="stroke-dasharray: 282.743; stroke-dashoffset: 84.823;"></circle>
+                                    </svg>
+                                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-slate-800 dark:text-slate-200">70<span class="text-base">%</span></span>
+                                </div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">균형 잡힌 식단</p>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">오늘의 식단은 전반적으로 균형이 잘 잡혀 있습니다. 특히 아침 식사를 통해 충분한 단백질을 섭취하신 점이 좋습니다. 다만, 목표 섭취량에 비해 칼로리와 탄수화물 섭취가 부족한 편입니다. 점심과 저녁 식사를 거르지 않고, 건강한 탄수화물과 채소를 추가하여 영양 목표를 달성해 보세요.</p>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/30">
+                                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 mt-0.5">thumb_up</span>
+                                        <div>
+                                            <h4 class="font-bold text-green-800 dark:text-green-300">잘한 점</h4>
+                                            <p class="text-sm text-green-700 dark:text-green-400">아침 식단에 계란과 통밀빵을 포함하여 양질의 단백질과 복합 탄수화물을 섭취했습니다.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/30">
+                                        <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 mt-0.5">lightbulb</span>
+                                        <div>
+                                            <h4 class="font-bold text-orange-800 dark:text-orange-300">개선 제안</h4>
+                                            <p class="text-sm text-orange-700 dark:text-orange-400">점심과 저녁 식사를 추가하여 규칙적인 식사 패턴을 유지하고, 퀴노아, 현미밥과 같은 건강한 탄수화물과 다양한 색상의 채소를 더해보세요.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">아침</h3>
+                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary flex items-center gap-1 text-sm font-medium">
+                                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                                    <span>사진 추가</span>
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">계란 후라이</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">2개, 180 kcal</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">통밀빵</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">2조각, 160 kcal</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-4 mt-2 text-right">
+                                <p class="text-slate-800 dark:text-slate-200 font-bold">합계: <span class="text-primary">340</span> kcal</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">점심</h3>
+                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary flex items-center gap-1 text-sm font-medium">
+                                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                                    <span>사진 추가</span>
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
+                                <p>점심 식사 기록이 없습니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">저녁</h3>
+                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary flex items-center gap-1 text-sm font-medium">
+                                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                                    <span>사진 추가</span>
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
+                                <p>저녁 식사 기록이 없습니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">기타</h3>
+                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary flex items-center gap-1 text-sm font-medium">
+                                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                                    <span>사진 추가</span>
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">아몬드</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">한 줌 (30g), 170 kcal</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-4 mt-2 text-right">
+                                <p class="text-slate-800 dark:text-slate-200 font-bold">합계: <span class="text-primary">170</span> kcal</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end py-4 gap-4">
+                        <button class="flex max-w-xs cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 px-8 hover:bg-primary/90 focus:ring-4 focus:ring-primary/40">
+                            <span>기록 완료 및 평가하기</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</body></html>
