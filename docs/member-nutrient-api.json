@@ -8,6 +8,7 @@
       "path": "/members/nutrients",
       "response": {
         "memberId": 2,
+        "targetDate": null,
         "kcal": 2100.0,
         "protein": 72.0,
         "fat": 58.3,
@@ -27,6 +28,7 @@
       "path": "/members/nutrients/recalculate",
       "response": {
         "memberId": 2,
+        "targetDate": "2025-02-01",
         "kcal": 2250.0,
         "protein": 76.8,
         "fat": 62.5,
@@ -59,6 +61,7 @@
       "nullableFields": ["kcal", "protein", "fat", "saturatedFat", "transFat", "carbohydrates", "sugar", "natrium", "cholesterol"],
       "response": {
         "memberId": 2,
+        "targetDate": "2025-02-02",
         "kcal": 2000.0,
         "protein": 80.0,
         "fat": 55.0,
@@ -72,6 +75,26 @@
         "updatedAt": "2025-02-02T08:12:00"
       },
       "notes": "최소 1개 필드를 제공해야 합니다."
+    },
+    {
+      "name": "특정 날짜의 영양 섭취 목표 조회",
+      "method": "GET",
+      "path": "/members/nutrients/daily",
+      "query": { "date": "2025-02-01" },
+      "response": {
+        "memberId": 2,
+        "targetDate": "2025-02-01",
+        "kcal": 2100.0,
+        "protein": 72.0,
+        "fat": 58.3,
+        "saturatedFat": 23.3,
+        "transFat": 2.3,
+        "carbohydrates": 288.8,
+        "sugar": 52.5,
+        "natrium": 2000.0,
+        "cholesterol": 300.0
+      },
+      "notes": "member_nutrient_daily 스냅샷을 반환합니다. 없으면 404."
     }
   ]
 }
