@@ -12,3 +12,12 @@ export const passwordChange = (payload) => apiClient.post('/members/password-cha
 
 // 회원 정보 수정 (프로필 업데이트)
 export const updateMember = (payload) => apiClient.patch('/members/info', payload);
+
+// 권장 섭취량 조회
+export const getMemberNutrients = () => apiClient.get('/members/nutrients');
+
+// 신장/체중 기반 권장 섭취량 재계산
+export const recalculateMemberNutrients = () => apiClient.post('/members/nutrients/recalculate');
+
+// 권장 섭취량 수동 수정
+export const updateMemberNutrients = (payload) => apiClient.patch('/members/nutrients', payload);

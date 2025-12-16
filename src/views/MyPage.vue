@@ -168,6 +168,97 @@
             </form>
           </div>
         </section>
+
+        <section class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-text-light dark:text-text-dark">일일 권장 섭취량</h3>
+              <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                신체 정보를 기반으로 계산된 권장 섭취량입니다.
+              </p>
+            </div>
+            <div class="flex gap-2" v-if="!missingMetrics">
+              <button
+                type="button"
+                class="rounded-md bg-primary px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:opacity-90"
+                @click="recalculateTargets"
+              >
+                권장 섭취량으로 설정
+              </button>
+              <button
+                type="button"
+                class="rounded-md border border-border-light bg-background-light px-3 py-2 text-xs font-semibold text-text-light transition hover:bg-border-light/60 dark:border-border-dark dark:bg-background-dark dark:text-text-dark"
+                @click="startNutrientEdit"
+              >
+                직접 설정하기
+              </button>
+            </div>
+          </div>
+
+          <div v-if="missingMetrics" class="mt-4 rounded-lg border border-dashed border-border-light bg-background-light px-4 py-6 text-sm text-text-secondary-light dark:border-border-dark dark:bg-background-dark dark:text-text-secondary-dark">
+            신장과 체중을 입력하면 일일 권장 섭취량을 자동 계산해 보여드려요.
+            <button
+              type="button"
+              class="ml-2 rounded-md border border-border-light bg-card-light px-3 py-1 text-xs font-semibold text-text-light transition hover:bg-border-light/60 dark:border-border-dark dark:bg-card-dark dark:text-text-dark"
+              @click="startEdit"
+            >
+              신체 정보 입력하기
+            </button>
+          </div>
+
+          <div v-else>
+            <div v-if="recommendedLoading" class="mt-6 rounded-lg border border-border-light bg-background-light px-4 py-6 text-sm text-text-secondary-light dark:border-border-dark dark:bg-background-dark dark:text-text-secondary-dark">
+              권장 섭취량을 계산하는 중입니다...
+            </div>
+            <div v-else-if="recommendedError" class="mt-6 rounded-lg border border-border-light bg-background-light px-4 py-6 text-sm text-red-500 dark:border-border-dark dark:bg-background-dark">
+              {{ recommendedError }}
+            </div>
+            <div v-else-if="recommendedList.length === 0" class="mt-6 rounded-lg border border-border-light bg-background-light px-4 py-6 text-sm text-text-secondary-light dark:border-border-dark dark:bg-background-dark dark:text-text-secondary-dark">
+              아직 권장 섭취량 데이터가 없습니다. 권장 섭취량으로 설정 버튼을 눌러주세요.
+            </div>
+            <div v-else class="mt-6 grid grid-cols-3 gap-4">
+              <div
+                v-for="nutrient in recommendedList"
+                :key="nutrient.key"
+                class="flex flex-col gap-2 rounded-lg border border-border-light bg-background-light px-4 py-3 text-sm shadow-sm dark:border-border-dark dark:bg-background-dark"
+              >
+                <div class="flex items-center justify-between">
+                  <p class="font-semibold text-text-light dark:text-text-dark">{{ nutrient.label }}</p>
+                  <span class="text-[11px] font-medium text-primary/80">{{ nutrient.tag }}</span>
+                </div>
+                <div v-if="nutrientEditMode">
+                  <input
+                    v-model="nutrientForm[nutrient.key]"
+                    type="number"
+                    step="0.1"
+                    class="h-11 w-full rounded-lg border border-border-light bg-card-light px-3 text-sm font-semibold text-text-light placeholder:text-text-secondary-light focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-border-dark dark:bg-card-dark dark:text-text-dark dark:placeholder:text-text-secondary-dark"
+                  />
+                </div>
+                <p v-else class="text-lg font-bold text-text-light dark:text-text-dark">
+                  {{ nutrient.value }} {{ nutrient.unit }}
+                </p>
+                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark">{{ nutrient.note }}</p>
+              </div>
+            </div>
+            <div v-if="nutrientEditMode" class="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                class="rounded-lg border border-border-light bg-background-light px-4 py-2 text-sm font-semibold text-text-light transition hover:bg-border-light/60 dark:border-border-dark dark:bg-background-dark dark:text-text-dark"
+                @click="cancelNutrientEdit"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+                :disabled="nutrientSaveLoading"
+                @click="saveNutrientEdit"
+              >
+                {{ nutrientSaveLoading ? '저장 중...' : '완료' }}
+              </button>
+            </div>
+          </div>
+        </section>
       </template>
     </div>
   </div>
@@ -176,7 +267,13 @@
 <script setup>
 import { computed, reactive, ref, watch } from 'vue';
 import { useUserStore } from '@/stores/userStore';
-import { passwordChange, passwordCheck, updateMember } from '@/services/memberService';
+import {
+  getMemberNutrients,
+  passwordChange,
+  passwordCheck,
+  recalculateMemberNutrients,
+  updateMember, updateMemberNutrients,
+} from '@/services/memberService';
 
 const userStore = useUserStore();
 const member = computed(() => userStore.member || {});
@@ -206,6 +303,22 @@ const profileForm = reactive({
   heightCm: '',
   weightKg: '',
 });
+const recommendedLoading = ref(false);
+const recommendedError = ref('');
+const recommendedTargets = ref(null);
+const nutrientEditMode = ref(false);
+const nutrientSaveLoading = ref(false);
+const nutrientForm = reactive({
+  kcal: null,
+  carbohydrates: null,
+  protein: null,
+  fat: null,
+  saturatedFat: null,
+  transFat: null,
+  sugar: null,
+  natrium: null,
+  cholesterol: null,
+});
 
 const hydrateProfileForm = () => {
   profileForm.email = member.value.email || '';
@@ -217,9 +330,14 @@ const hydrateProfileForm = () => {
 };
 
 watch(
-  member,
+  [member, isVerified],
   () => {
     hydrateProfileForm();
+    if (!isVerified.value) {
+      recommendedTargets.value = null;
+      return;
+    }
+    fetchNutrientsIfPossible();
   },
   { immediate: true }
 );
@@ -295,12 +413,112 @@ const handleSaveProfile = async () => {
       member: updatedMember,
     });
     isEditMode.value = false;
+    if (!missingMetrics.value) {
+      await fetchNutrientsIfPossible();
+    } else {
+      recommendedTargets.value = null;
+    }
     alert('회원 정보가 수정되었습니다.');
   } catch (error) {
     console.error('회원 정보 수정 실패', error);
     alert('회원 정보 수정에 실패했습니다.');
   } finally {
     saveLoading.value = false;
+  }
+};
+
+// 권장 섭취량 계산/조회
+const missingMetrics = computed(() => !profileForm.heightCm || !profileForm.weightKg);
+
+const recommendedList = computed(() => {
+  if (!recommendedTargets.value) return [];
+  const t = recommendedTargets.value;
+  return [
+    { key: 'kcal', label: '칼로리', unit: 'kcal', value: t.kcal, tag: '활동 에너지', note: '체중 유지 및 활동에 필요한 총 에너지입니다.' },
+    { key: 'carbohydrates', label: '탄수화물', unit: 'g', value: t.carbohydrates, tag: '주요 에너지원', note: '하루 열량의 약 50%를 권장합니다.' },
+    { key: 'protein', label: '단백질', unit: 'g', value: t.protein, tag: '근육 형성', note: '근육 유지와 포만감을 돕습니다.' },
+    { key: 'fat', label: '지방', unit: 'g', value: t.fat, tag: '에너지 저장', note: '세포막 구성과 호르몬 생성에 필요합니다.' },
+    { key: 'saturatedFat', label: '포화 지방', unit: 'g', value: t.saturatedFat, tag: '섭취 주의', note: '과다 섭취를 피하세요.' },
+    { key: 'transFat', label: '트랜스 지방', unit: 'g', value: t.transFat, tag: '섭취 제한', note: '가능한 섭취를 피하는 것이 좋습니다.' },
+    { key: 'sugar', label: '당류', unit: 'g', value: t.sugar, tag: '적정량', note: '첨가당은 하루 50g 이하로 권장합니다.' },
+    { key: 'natrium', label: '나트륨', unit: 'mg', value: t.natrium, tag: '혈압 관리', note: 'WHO 기준 하루 2000mg 미만 권장.' },
+    { key: 'cholesterol', label: '콜레스테롤', unit: 'mg', value: t.cholesterol, tag: '혈관 건강', note: '성인 권장 섭취량 300mg 이하.' },
+  ];
+});
+
+const fetchNutrientsIfPossible = async () => {
+  if (missingMetrics.value) {
+    recommendedTargets.value = null;
+    return;
+  }
+  recommendedLoading.value = true;
+  recommendedError.value = '';
+  try {
+    const res = await getMemberNutrients();
+    recommendedTargets.value = res.data;
+  } catch (error) {
+    console.error('권장 섭취량 조회 실패', error);
+    recommendedError.value = '권장 섭취량을 불러오지 못했습니다. 나중에 다시 시도해주세요.';
+    recommendedTargets.value = null;
+  } finally {
+    recommendedLoading.value = false;
+  }
+};
+
+const recalculateTargets = async () => {
+  if (missingMetrics.value) {
+    alert('신장과 체중을 먼저 입력하고 저장해주세요.');
+    return;
+  }
+  recommendedLoading.value = true;
+  recommendedError.value = '';
+  try {
+    await recalculateMemberNutrients();
+    await fetchNutrientsIfPossible();
+  } catch (error) {
+    console.error('권장 섭취량 재계산 실패', error);
+    recommendedError.value = '재계산에 실패했습니다. 다시 시도해주세요.';
+  } finally {
+    recommendedLoading.value = false;
+  }
+};
+
+const startNutrientEdit = () => {
+  if (!recommendedTargets.value) {
+    alert('먼저 권장 섭취량을 가져와 주세요.');
+    return;
+  }
+  Object.assign(nutrientForm, recommendedTargets.value);
+  nutrientEditMode.value = true;
+};
+
+const cancelNutrientEdit = () => {
+  nutrientEditMode.value = false;
+};
+
+const saveNutrientEdit = async () => {
+  nutrientSaveLoading.value = true;
+  try {
+    // nullableFields 모두 지원. 빈 값(null/undefined)은 제외하고 보냅니다.
+    const payload = {};
+    Object.entries(nutrientForm).forEach(([key, val]) => {
+      if (val !== null && val !== undefined && val !== '') {
+        payload[key] = Number(val);
+      }
+    });
+    if (Object.keys(payload).length === 0) {
+      alert('최소 한 가지 값은 입력해야 합니다.');
+      return;
+    }
+    await updateMemberNutrients(payload);
+    await fetchNutrientsIfPossible();
+    nutrientEditMode.value = false;
+    alert('권장 섭취량이 수정되었습니다.');
+  } catch (error) {
+    console.error('권장 섭취량 수정 실패', error);
+    alert('권장 섭취량 수정에 실패했습니다.');
+  } finally {
+    nutrientSaveLoading.value = false;
   }
 };
 </script>
