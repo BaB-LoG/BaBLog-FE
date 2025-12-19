@@ -151,6 +151,8 @@
           :stats="meals.BREAKFAST.stats"
           empty-message="아침 식사 기록이 없습니다."
           @open-add="handleOpenAdd"
+          @open-edit="handleOpenEdit"
+          @delete-item="handleDeleteItem"
         />
         <MealLogPanel
           title="점심"
@@ -158,6 +160,8 @@
           :stats="meals.LUNCH.stats"
           empty-message="점심 식사 기록이 없습니다."
           @open-add="handleOpenAdd"
+          @open-edit="handleOpenEdit"
+          @delete-item="handleDeleteItem"
         />
         <MealLogPanel
           title="저녁"
@@ -165,6 +169,8 @@
           :stats="meals.DINNER.stats"
           empty-message="저녁 식사 기록이 없습니다."
           @open-add="handleOpenAdd"
+          @open-edit="handleOpenEdit"
+          @delete-item="handleDeleteItem"
         />
         <MealLogPanel
           title="간식"
@@ -172,6 +178,8 @@
           :stats="meals.SNACK.stats"
           empty-message="간식 기록이 없습니다."
           @open-add="handleOpenAdd"
+          @open-edit="handleOpenEdit"
+          @delete-item="handleDeleteItem"
         />
       </section>
     </div>
@@ -180,19 +188,48 @@
   <AddMealFoodModal
     v-if="showAddModal"
     :meal-label="selectedMealLabel"
-    @close="showAddModal = false"
-    @submit="handleSubmitAdd"
+    :mode="modalMode"
+    :initial-food="editTarget?.food || null"
+    :initial-quantity="editTarget?.intake ?? ''"
+    @close="handleCloseModal"
+    @submit="handleSubmitMeal"
   />
+
+  <div v-if="showDeleteConfirm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="w-full max-w-md rounded-xl border border-border-light bg-card-light p-6 shadow-2xl dark:border-border-dark dark:bg-card-dark">
+      <h3 class="text-lg font-bold text-text-light dark:text-text-dark">음식 삭제</h3>
+      <p class="mt-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+        {{ deleteTarget?.name || '선택한 음식' }}을(를) 삭제할까요? 삭제하면 되돌릴 수 없습니다.
+      </p>
+      <div class="mt-6 flex justify-end gap-3">
+        <button
+          type="button"
+          class="h-11 rounded-lg border border-border-light bg-background-light px-5 text-sm font-semibold text-text-light transition hover:bg-border-light/60 dark:border-border-dark dark:bg-background-dark dark:text-text-dark"
+          @click="closeDeleteConfirm"
+        >
+          취소
+        </button>
+        <button
+          type="button"
+          class="h-11 rounded-lg bg-red-500 px-5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+          :disabled="deleteLoading"
+          @click="confirmDelete"
+        >
+          {{ deleteLoading ? '삭제 중...' : '삭제' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { addDays, format, parseISO } from 'date-fns';
+import {computed, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue';
+import {addDays, format, parseISO} from 'date-fns';
 import AddMealFoodModal from '@/components/AddMealFoodModal.vue';
 import MealLogPanel from '@/components/MealLogPanel.vue';
 import NutrientProgress from '@/components/NutrientProgress.vue';
-import { addMealFood, getMealsByDate } from '@/services/mealService';
-import { getDailyTargets } from '@/services/memberNutrientService';
+import {addMealFood, deleteMealFood, getMealsByDate, updateMealFood} from '@/services/mealService';
+import {getDailyTargets} from '@/services/memberNutrientService';
 
 // 기본 날짜는 오늘
 const selectedDate = ref(format(new Date(), 'yyyy-MM-dd'));
@@ -243,19 +280,41 @@ const hydrateMeals = (mealList) => {
     const type = meal.mealType;
     if (!meals[type]) return;
     // 영양은 nutrition 이 있으면 사용, 없으면 foods 합산
-    const stats = meal.nutrition
-      ? { ...makeEmptyStats(), ...meal.nutrition }
-      : meal.foods?.reduce((acc, food) => {
+    meals[type].stats = meal.nutrition
+        ? {...makeEmptyStats(), ...meal.nutrition}
+        : meal.foods?.reduce((acc, food) => {
           Object.entries(makeEmptyStats()).forEach(([k]) => {
             acc[k] = (acc[k] || 0) + (food[k] || 0);
           });
           return acc;
         }, makeEmptyStats());
-
-    meals[type].stats = stats;
     meals[type].items = (meal.foods || []).map((food) => ({
+      mealFoodId: food.mealFoodId,
+      mealId: food.mealId,
+      foodId: food.foodId,
       name: food.name,
       detail: `${food.intake}g${food.kcal ? `, ${food.kcal} kcal` : ''}`,
+      intake: food.intake,
+      unit: food.unit || 'g',
+      vendor: food.vendor,
+      standard: food.standard,
+      foodWeight: food.foodWeight,
+      food: {
+        id: food.foodId,
+        name: food.name,
+        vendor: food.vendor,
+        standard: food.standard,
+        foodWeight: food.foodWeight,
+        kcal: food.kcal,
+        protein: food.protein,
+        fat: food.fat,
+        saturatedFat: food.saturatedFat,
+        transFat: food.transFat,
+        carbohydrates: food.carbohydrates,
+        sugar: food.sugar,
+        natrium: food.natrium,
+        cholesterol: food.cholesterol,
+      },
       nutrition: {
         kcal: food.kcal,
         carbohydrates: food.carbohydrates,
@@ -311,29 +370,91 @@ const scoreCircleStyle = computed(() => {
 });
 
 const showAddModal = ref(false);
+const modalMode = ref('add');
+const editTarget = ref(null);
+const showDeleteConfirm = ref(false);
+const deleteTarget = ref(null);
+const deleteLoading = ref(false);
 const selectedMealLabel = ref('');
 const selectedMealType = ref('');
 
 const handleOpenAdd = (label) => {
   selectedMealLabel.value = label;
   selectedMealType.value = mealLabelToType(label);
+  modalMode.value = 'add';
+  editTarget.value = null;
   showAddModal.value = true;
 };
 
-const handleSubmitAdd = async (payload) => {
+const handleOpenEdit = ({ label, item }) => {
+  selectedMealLabel.value = label;
+  selectedMealType.value = mealLabelToType(label);
+  modalMode.value = 'edit';
+  editTarget.value = item;
+  showAddModal.value = true;
+};
+
+const handleCloseModal = () => {
+  showAddModal.value = false;
+  modalMode.value = 'add';
+  editTarget.value = null;
+};
+
+const handleSubmitMeal = async (payload) => {
   if (!selectedMealType.value) return;
   try {
-    await addMealFood({
-      mealType: selectedMealType.value,
-      mealDate: selectedDate.value,
-      foodId: payload.foodId,
-      intake: payload.intake,
-      unit: payload.unit,
-    });
+    if (modalMode.value === 'edit' && editTarget.value) {
+      await updateMealFood(editTarget.value.mealFoodId, {
+        mealId: editTarget.value.mealId,
+        foodId: payload.foodId,
+        intake: payload.intake,
+        unit: payload.unit,
+      });
+    } else {
+      await addMealFood({
+        mealType: selectedMealType.value,
+        mealDate: selectedDate.value,
+        foodId: payload.foodId,
+        intake: payload.intake,
+        unit: payload.unit,
+      });
+    }
     await fetchMeals();
+    handleCloseModal();
   } catch (error) {
-    console.error('음식 추가 실패', error);
-    alert('음식 추가에 실패했습니다.');
+    console.error('음식 저장 실패', error);
+    alert('음식 저장에 실패했습니다.');
+  }
+};
+
+const handleDeleteItem = async ({ item }) => {
+  if (!item?.mealFoodId) {
+    alert('삭제할 수 없는 항목입니다.');
+    return;
+  }
+  deleteTarget.value = item;
+  showDeleteConfirm.value = true;
+};
+
+const closeDeleteConfirm = () => {
+  showDeleteConfirm.value = false;
+  deleteTarget.value = null;
+  deleteLoading.value = false;
+};
+
+const confirmDelete = async () => {
+  if (!deleteTarget.value?.mealFoodId || deleteLoading.value) {
+    return;
+  }
+  deleteLoading.value = true;
+  try {
+    await deleteMealFood(deleteTarget.value.mealFoodId);
+    await fetchMeals();
+    closeDeleteConfirm();
+  } catch (error) {
+    console.error('음식 삭제 실패', error);
+    alert('음식 삭제에 실패했습니다.');
+    deleteLoading.value = false;
   }
 };
 
