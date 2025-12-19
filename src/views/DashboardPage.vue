@@ -2,13 +2,13 @@
   <div class="min-h-screen bg-background-light px-8 py-10 text-text-light dark:bg-background-dark dark:text-text-dark">
     <div class="mx-auto flex w-[1200px] min-w-[1200px] max-w-[1280px] flex-col gap-8">
       <header class="flex flex-col gap-2">
-        <h1 class="text-3xl font-black leading-tight tracking-[-0.02em]">냠냠 대시보드</h1>
+        <h1 class="text-3xl font-black leading-tight tracking-[-0.02em]">대시보드</h1>
         <p class="text-text-secondary-light dark:text-text-secondary-dark">
           오늘의 식단과 목표 달성 현황을 확인하세요.
         </p>
       </header>
 
-      <div class="grid grid-cols-[2fr_1fr] gap-6">
+      <div class="grid grid-cols-[3fr_1fr] gap-6">
         <section class="flex flex-col gap-6">
           <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
             <div class="mb-4 flex items-center justify-between">
@@ -27,50 +27,50 @@
                 </h3>
                 <ul class="flex flex-col gap-3">
                   <li
-                    v-for="meal in meals"
-                    :key="meal.label"
+                    v-for="meal in mealSummaries"
+                    :key="meal.mealType"
                     class="flex items-center justify-between rounded-lg border border-border-light bg-background-light px-4 py-3 dark:border-border-dark dark:bg-background-dark"
-                    :class="!meal.name ? 'opacity-60' : ''"
+                    :class="meal.foodCount === 0 ? 'opacity-60' : ''"
                   >
                     <div class="flex items-center gap-3">
-                      <img class="w-8 h-8" :src="meal.icon" :alt="icon"/>
+                      <img class="w-8 h-8" :src="meal.icon" :alt="meal.label" />
                       <div>
                         <p class="font-medium">{{ meal.label }}</p>
                         <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                          {{ meal.name || '기록되지 않음' }}
+                          {{ meal.displayName }}
                         </p>
                       </div>
                     </div>
-                    <p v-if="meal.kcal" class="font-semibold text-text-light dark:text-text-dark">{{ meal.kcal }} kcal</p>
+                    <p v-if="meal.kcal > 0" class="font-semibold text-text-light dark:text-text-dark">{{ formatNumber(meal.kcal) }} kcal</p>
                   </li>
                 </ul>
               </div>
               <div class="flex flex-col gap-3">
                 <h3 class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">
-                  총 섭취 현황 및 평가
+                  총 섭취 현황
                 </h3>
                 <div class="flex h-full flex-col rounded-lg border border-border-light bg-background-light p-4 dark:border-border-dark dark:bg-background-dark">
-                  <div class="flex items-baseline gap-2">
-                    <p class="text-3xl font-bold text-primary">{{ intake.current }}</p>
-                    <p class="text-text-secondary-light dark:text-text-secondary-dark">/ {{ intake.target }} kcal</p>
+                  <div class="flex items-baseline gap-2 justify-between">
+                    <p class="text-3xl font-bold text-primary">{{ formatNumber(totalKcal) }} kcal</p>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark">오늘 총 섭취</p>
                   </div>
-                  <div class="mt-3 h-2.5 w-full rounded-full bg-border-light dark:bg-border-dark">
-                    <div
-                      class="h-full rounded-full bg-primary"
-                      :style="{ width: intake.progress }"
-                    />
-                  </div>
-                  <p class="mt-3 text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
-                    {{ intake.message }}
-                  </p>
-                  <div class="mt-4 border-t border-border-light pt-3 text-sm dark:border-border-dark">
-                    <div
-                      v-for="macro in macros"
-                      :key="macro.label"
-                      class="flex items-center justify-between"
-                    >
-                      <span class="text-text-secondary-light dark:text-text-secondary-dark">{{ macro.label }}</span>
-                      <span class="font-medium">{{ macro.value }}</span>
+                  <div class="mt-4 border-t border-border-light pt-4 text-sm dark:border-border-dark">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div
+                        v-for="macro in macroSummaries"
+                        :key="macro.label"
+                        class="flex flex-col gap-2"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span class="text-text-secondary-light dark:text-text-secondary-dark">{{ macro.label }} ({{ macro.unit }})</span>
+                          <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">
+                            {{ formatNumber(macro.current) }} / {{ formatNumber(macro.target) }}
+                          </span>
+                        </div>
+                        <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark">
+                          <div class="h-full rounded-full" :class="macro.colorClass" :style="{ width: `${macro.percent}%` }" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -217,24 +217,175 @@
 </template>
 
 <script setup>
-const meals = [
-  { label: '아침', name: '닭가슴살 샐러드', kcal: 350, icon: 'src/assets/breakfast.png' },
-  { label: '점심', name: '현미밥과 불고기', kcal: 550, icon: 'src/assets/lunch.png' },
-  { label: '저녁', name: null, kcal: null, icon: 'src/assets/dinner.png' },
-];
+import { computed, onMounted, ref } from 'vue';
+import { format } from 'date-fns';
+import { getDailyMealSummary } from '@/services/mealService';
+import breakfastIcon from '@/assets/breakfast.png';
+import lunchIcon from '@/assets/lunch.png';
+import dinnerIcon from '@/assets/dinner.png';
+import snackIcon from '@/assets/bablog_logo.png';
 
-const macros = [
-  { label: '탄수화물', value: '100g' },
-  { label: '단백질', value: '70g' },
-  { label: '지방', value: '25g' },
-];
+const today = format(new Date(), 'yyyy-MM-dd');
+const summary = ref({
+  date: today,
+  totals: {
+    kcal: 0,
+    carbohydrates: 0,
+    protein: 0,
+    fat: 0,
+    saturatedFat: 0,
+    transFat: 0,
+    sugar: 0,
+    natrium: 0,
+    cholesterol: 0,
+  },
+  targets: {
+    kcal: 0,
+    carbohydrates: 0,
+    protein: 0,
+    fat: 0,
+    saturatedFat: 0,
+    transFat: 0,
+    sugar: 0,
+    natrium: 0,
+    cholesterol: 0,
+  },
+  meals: [],
+});
+const loadingSummary = ref(false);
+const summaryError = ref('');
 
-const intake = {
-  current: 900,
-  target: 1800,
-  progress: '50%',
-  message: '아직 목표 칼로리의 절반을 섭취했어요. 저녁 식사를 통해 단백질과 채소를 보충해보세요.',
+const mealMeta = {
+  BREAKFAST: { label: '아침', icon: breakfastIcon },
+  LUNCH: { label: '점심', icon: lunchIcon },
+  DINNER: { label: '저녁', icon: dinnerIcon },
+  SNACK: { label: '간식', icon: snackIcon },
 };
+
+const mealOrder = ['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'];
+
+const formatNumber = (value) => {
+  const numeric = Number(value || 0);
+  if (Number.isNaN(numeric)) return '0';
+  return numeric % 1 === 0 ? numeric.toLocaleString() : numeric.toFixed(1);
+};
+
+const mealSummaries = computed(() =>
+  mealOrder.map((mealType) => {
+    const meta = mealMeta[mealType];
+    const base = summary.value.meals.find((meal) => meal.mealType === mealType) || {};
+    const foodCount = Number(base.foodCount || 0);
+    const representativeFoodName = base.representativeFoodName || '';
+    let displayName = '기록되지 않음';
+    if (foodCount > 0) {
+      if (representativeFoodName) {
+        displayName = foodCount > 1
+          ? `${representativeFoodName} 외 ${foodCount - 1}종`
+          : representativeFoodName;
+      } else {
+        displayName = `음식 ${foodCount}종`;
+      }
+    }
+    return {
+      mealType,
+      label: meta.label,
+      icon: meta.icon,
+      foodCount,
+      displayName,
+      kcal: Number(base.kcal || 0),
+    };
+  })
+);
+
+const totalKcal = computed(() => summary.value.totals?.kcal ?? 0);
+
+const nutrientDefinitions = [
+  { key: 'carbohydrates', label: '탄수화물', unit: 'g' },
+  { key: 'protein', label: '단백질', unit: 'g' },
+  { key: 'fat', label: '지방', unit: 'g' },
+  { key: 'saturatedFat', label: '포화 지방', unit: 'g' },
+  { key: 'transFat', label: '트랜스 지방', unit: 'g' },
+  { key: 'sugar', label: '당류', unit: 'g' },
+  { key: 'natrium', label: '나트륨', unit: 'mg' },
+  { key: 'cholesterol', label: '콜레스테롤', unit: 'mg' },
+];
+
+const macroSummaries = computed(() =>
+  nutrientDefinitions.map((nutrient) => {
+    const current = Number(summary.value.totals?.[nutrient.key] || 0);
+    const target = Number(summary.value.targets?.[nutrient.key] || 0);
+    const percent = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
+    const colorClass = getProgressColorClass(current, target);
+    return {
+      label: nutrient.label,
+      unit: nutrient.unit,
+      current,
+      target,
+      percent,
+      colorClass,
+    };
+  })
+);
+
+const getProgressColorClass = (current, target) => {
+  if (!target || target <= 0) {
+    return 'bg-border-light dark:bg-border-dark';
+  }
+  const ratio = current / target;
+  if (ratio < 0.6) {
+    return 'bg-amber-400';
+  }
+  if (ratio <= 1.1) {
+    return 'bg-primary';
+  }
+  return 'bg-red-500';
+};
+
+const normalizeSummary = (data) => ({
+  date: data?.date || today,
+  totals: {
+    kcal: Number(data?.totals?.kcal || 0),
+    carbohydrates: Number(data?.totals?.carbohydrates || 0),
+    protein: Number(data?.totals?.protein || 0),
+    fat: Number(data?.totals?.fat || 0),
+    saturatedFat: Number(data?.totals?.saturatedFat || 0),
+    transFat: Number(data?.totals?.transFat || 0),
+    sugar: Number(data?.totals?.sugar || 0),
+    natrium: Number(data?.totals?.natrium || 0),
+    cholesterol: Number(data?.totals?.cholesterol || 0),
+  },
+  targets: {
+    kcal: Number(data?.targets?.kcal || 0),
+    carbohydrates: Number(data?.targets?.carbohydrates || 0),
+    protein: Number(data?.targets?.protein || 0),
+    fat: Number(data?.targets?.fat || 0),
+    saturatedFat: Number(data?.targets?.saturatedFat || 0),
+    transFat: Number(data?.targets?.transFat || 0),
+    sugar: Number(data?.targets?.sugar || 0),
+    natrium: Number(data?.targets?.natrium || 0),
+    cholesterol: Number(data?.targets?.cholesterol || 0),
+  },
+  meals: Array.isArray(data?.meals) ? data.meals : [],
+});
+
+const fetchSummary = async () => {
+  loadingSummary.value = true;
+  summaryError.value = '';
+  try {
+    const res = await getDailyMealSummary(today);
+    summary.value = normalizeSummary(res.data);
+  } catch (error) {
+    console.error('대시보드 요약 조회 실패', error);
+    summaryError.value = '대시보드 요약을 불러오지 못했습니다.';
+    summary.value = normalizeSummary(null);
+  } finally {
+    loadingSummary.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchSummary();
+});
 
 const weekly = {
   averageKcal: 1850,
