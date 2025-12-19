@@ -148,7 +148,7 @@
           :disabled="!canSubmit"
           @click="handleSubmit"
         >
-          추가
+          {{ submitLabel }}
         </button>
       </div>
     </div>
@@ -156,13 +156,25 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { searchFoods } from '@/services/foodService';
 
 const props = defineProps({
   mealLabel: {
     type: String,
     default: '식사',
+  },
+  mode: {
+    type: String,
+    default: 'add',
+  },
+  initialFood: {
+    type: Object,
+    default: null,
+  },
+  initialQuantity: {
+    type: [Number, String],
+    default: '',
   },
 });
 
@@ -233,6 +245,33 @@ const calculateNutrition = () => {
   };
 };
 
+const resetForm = () => {
+  form.foodName = '';
+  form.vendor = '';
+  form.quantity = '';
+  selectedFood.value = null;
+  calculatedNutrition.value = null;
+  searchResults.value = [];
+};
+
+const setInitialState = () => {
+  if (!props.initialFood) {
+    if (props.mode === 'add') {
+      resetForm();
+    }
+    return;
+  }
+  selectedFood.value = props.initialFood;
+  form.foodName = props.initialFood.name || '';
+  form.vendor = props.initialFood.vendor || '';
+  form.quantity = props.initialQuantity ?? '';
+  if (form.quantity) {
+    calculateNutrition();
+  } else {
+    calculatedNutrition.value = null;
+  }
+};
+
 const handleSubmit = () => {
   if (!selectedFood.value || !form.quantity) {
     alert('음식과 섭취량을 입력해주세요.');
@@ -247,13 +286,10 @@ const handleSubmit = () => {
     nutrition: calculatedNutrition.value,
   });
   emitClose();
-  form.foodName = '';
-  form.vendor = '';
-  form.quantity = '';
-  selectedFood.value = null;
-  calculatedNutrition.value = null;
-  searchResults.value = [];
+  resetForm();
 };
+
+const submitLabel = computed(() => (props.mode === 'edit' ? '수정' : '추가'));
 
 const nutritionList = computed(() => {
   if (!calculatedNutrition.value) return [];
@@ -270,4 +306,13 @@ const nutritionList = computed(() => {
     { key: 'cholesterol', label: '콜레스테롤', value: n.cholesterol, unit: 'mg' },
   ];
 });
+
+setInitialState();
+
+watch(
+  () => [props.initialFood, props.initialQuantity, props.mode],
+  () => {
+    setInitialState();
+  },
+);
 </script>

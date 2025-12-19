@@ -19,7 +19,7 @@
             <ul class="flex flex-col gap-3 overflow-y-auto px-3 py-3">
               <li
                 v-for="item in items"
-                :key="item.name"
+                :key="item.mealFoodId || item.name"
                 class="flex items-center justify-between rounded-lg bg-card-light px-3 py-3 shadow-sm dark:bg-card-dark"
               >
                 <div>
@@ -27,10 +27,16 @@
                   <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">{{ item.detail }}</p>
                 </div>
                 <div class="flex gap-2">
-                  <button class="text-text-secondary-light transition hover:text-primary dark:text-text-secondary-dark dark:hover:text-primary">
+                  <button
+                    class="text-text-secondary-light transition hover:text-primary dark:text-text-secondary-dark dark:hover:text-primary"
+                    @click="emitOpenEdit(item)"
+                  >
                     <span class="material-symbols-outlined">edit</span>
                   </button>
-                  <button class="text-text-secondary-light transition hover:text-red-500 dark:text-text-secondary-dark">
+                  <button
+                    class="text-text-secondary-light transition hover:text-red-500 dark:text-text-secondary-dark"
+                    @click="emitDelete(item)"
+                  >
                     <span class="material-symbols-outlined">delete</span>
                   </button>
                 </div>
@@ -61,6 +67,8 @@ const props = defineProps({
   emptyMessage: { type: String, default: '기록이 없습니다.' },
 });
 
-const emit = defineEmits(['open-add']);
+const emit = defineEmits(['open-add', 'open-edit', 'delete-item']);
 const emitOpenAdd = () => emit('open-add', props.title);
+const emitOpenEdit = (item) => emit('open-edit', { label: props.title, item });
+const emitDelete = (item) => emit('delete-item', { label: props.title, item });
 </script>
