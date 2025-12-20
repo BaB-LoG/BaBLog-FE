@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-background-light px-8 py-10 text-text-light dark:bg-background-dark dark:text-text-dark">
-    <div class="mx-auto flex w-[1200px] min-w-[1200px] max-w-[1280px] flex-col gap-8">
+    <div class="mx-auto flex w-[1280px] flex-col gap-8">
       <header class="flex flex-col gap-2">
         <h1 class="text-3xl font-black leading-tight tracking-[-0.02em]">대시보드</h1>
         <p class="text-text-secondary-light dark:text-text-secondary-dark">
@@ -78,9 +78,15 @@
             </div>
           </div>
 
-          <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
-            <div class="mb-4 flex items-center justify-between">
-              <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em]">어제의 식단 기록에 대한 평가</h2>
+          <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex flex-nowrap items-center justify-between gap-4 border-b border-slate-100 bg-gradient-to-r from-slate-50/50 to-white p-6 dark:border-slate-800/50 dark:from-slate-800/20 dark:to-slate-900">
+              <div>
+                <h2 class="flex items-center gap-2 text-[22px] font-bold leading-tight tracking-[-0.015em] text-slate-900 dark:text-slate-100">
+                  <span class="material-symbols-outlined text-primary">psychology</span>
+                  어제의 식단 평가
+                </h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 whitespace-nowrap">어제 기록된 식단을 기반으로 한 AI 평가입니다.</p>
+              </div>
               <router-link
                 to="/reports"
                 class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:opacity-80"
@@ -88,38 +94,110 @@
                 자세히 보기
               </router-link>
             </div>
-            <div class="flex gap-6">
-              <div class="flex w-48 shrink-0 flex-col items-center justify-center rounded-lg border border-border-light bg-background-light px-6 py-8 text-center dark:border-border-dark dark:bg-background-dark">
-                <p class="text-5xl">🤔</p>
-                <p class="mt-3 text-lg font-bold">조금 아쉬워요</p>
-                <p class="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">72점</p>
+            <div class="p-6">
+              <div
+                v-if="yesterdayReportError"
+                class="mb-4 flex items-center justify-between gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800/80 dark:bg-red-900/30 dark:text-red-200"
+              >
+                <span>{{ yesterdayReportError }}</span>
+                <button
+                  type="button"
+                  class="rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-semibold text-red-700 transition hover:bg-red-100 dark:border-red-700 dark:bg-red-800/60 dark:text-red-100 dark:hover:bg-red-700/60"
+                  @click="fetchYesterdayReport"
+                >
+                  다시 불러오기
+                </button>
               </div>
-              <div class="flex flex-1 flex-col gap-4">
-                <div>
-                  <h3 class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">냠냠코치의 피드백</h3>
-                  <p class="mt-1 text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-                    어제는 전반적으로 균형이 좋았지만, 저녁 식사에서 지방 섭취가 다소 높았어요. 튀김류 대신 구이나 찜 요리를 선택하면 더 건강한 식단을 만들 수 있을 거예요.
-                  </p>
-                </div>
-                <div class="rounded-lg border border-border-light bg-background-light p-4 dark:border-border-dark dark:bg-background-dark">
-                  <h4 class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">주요 영양소 섭취량</h4>
-                  <div class="mt-2 flex flex-wrap gap-4 text-sm">
-                    <div class="flex items-center gap-2">
-                      <span class="h-3 w-3 rounded-full bg-primary" />
-                      <span class="text-text-secondary-light dark:text-text-secondary-dark">탄수화물: 45%</span>
+
+              <div v-if="yesterdayReport" class="flex flex-nowrap items-start gap-8">
+                <div class="flex w-[360px] shrink-0 flex-col gap-6">
+                  <div class="relative flex flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <div class="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-primary/50 via-primary to-primary/50"></div>
+                    <h3 class="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">AI-Score</h3>
+                    <div class="relative mb-2 size-40">
+                      <svg class="size-full rotate-[135deg]" viewBox="0 0 100 100">
+                        <circle class="text-slate-100 dark:text-slate-700" cx="50" cy="50" r="42" fill="transparent" stroke="currentColor" stroke-width="8" stroke-dasharray="200" stroke-linecap="round" />
+                        <circle
+                          :class="yesterdayGradeTheme.circleClass"
+                          cx="50"
+                          cy="50"
+                          r="42"
+                          fill="transparent"
+                          stroke="currentColor"
+                          stroke-width="8"
+                          stroke-linecap="round"
+                          stroke-dasharray="200"
+                          :stroke-dashoffset="yesterdayScoreOffset"
+                        />
+                      </svg>
+                      <div class="absolute inset-0 flex flex-col items-center justify-center pt-2">
+                        <span class="text-5xl font-black tracking-tight text-slate-900 dark:text-slate-100">{{ yesterdayScore }}</span>
+                        <span class="mt-1 text-sm font-medium text-slate-400 dark:text-slate-500">/ 100</span>
+                      </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                      <span class="h-3 w-3 rounded-full bg-blue-500" />
-                      <span class="text-text-secondary-light dark:text-text-secondary-dark">단백질: 20%</span>
+                    <div class="mt-2 text-center">
+                      <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-bold" :class="yesterdayGradeTheme.badgeClass">
+                        <span class="flex h-2 w-2 rounded-full" :class="yesterdayGradeTheme.dotClass"></span>
+                        <span class="material-symbols-outlined text-[16px]" :class="yesterdayGradeTheme.iconClass">{{ yesterdayGradeTheme.icon }}</span>
+                        {{ yesterdayReport.grade || '평가 없음' }}
+                      </div>
+                      <p v-if="yesterdayUpdatedAtText" class="mt-2 text-xs text-slate-400 dark:text-slate-500">업데이트 {{ yesterdayUpdatedAtText }}</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                      <span class="h-3 w-3 rounded-full bg-amber-400" />
-                      <span class="text-text-secondary-light dark:text-text-secondary-dark">
-                        지방: 35% <span class="text-xs text-red-500">(높음)</span>
-                      </span>
+                  </div>
+
+                  <div class="relative overflow-hidden rounded-2xl bg-slate-800 p-6 text-white shadow-lg dark:bg-slate-700">
+                    <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-2xl"></div>
+                    <div class="relative z-10">
+                      <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-300">
+                        <span class="material-symbols-outlined text-primary">summarize</span>
+                        요약
+                      </div>
+                      <p class="mt-3 text-sm leading-relaxed text-slate-100">
+                        {{ yesterdayReport.summary || '요약이 없습니다.' }}
+                      </p>
                     </div>
                   </div>
                 </div>
+
+                <div class="flex min-w-[560px] flex-1 flex-col gap-6">
+                  <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-5 shadow-sm dark:border-emerald-500/30 dark:bg-emerald-500/10">
+                    <div class="mb-3 flex items-center gap-2">
+                      <span class="material-symbols-outlined text-primary">thumb_up</span>
+                      <h4 class="text-base font-bold text-slate-900 dark:text-slate-100">잘한 점</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li v-for="(item, index) in (yesterdayReport.highlights || [])" :key="`yesterday-highlight-${index}`">{{ item }}</li>
+                      <li v-if="!(yesterdayReport.highlights || []).length" class="text-slate-400">아직 평가 항목이 없습니다.</li>
+                    </ul>
+                  </div>
+
+                  <div class="rounded-2xl border border-amber-100 bg-amber-50/80 p-5 shadow-sm dark:border-amber-500/30 dark:bg-amber-500/10">
+                    <div class="mb-3 flex items-center gap-2">
+                      <span class="material-symbols-outlined text-amber-500">lightbulb</span>
+                      <h4 class="text-base font-bold text-slate-900 dark:text-slate-100">개선 제안</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li v-for="(item, index) in (yesterdayReport.improvements || [])" :key="`yesterday-improve-${index}`">{{ item }}</li>
+                      <li v-if="!(yesterdayReport.improvements || []).length" class="text-slate-400">아직 개선 제안이 없습니다.</li>
+                    </ul>
+                  </div>
+
+                  <div class="rounded-2xl border border-sky-100 bg-sky-50/80 p-5 shadow-sm dark:border-sky-500/30 dark:bg-sky-500/10">
+                    <div class="mb-3 flex items-center gap-2">
+                      <span class="material-symbols-outlined text-sky-500">check_circle</span>
+                      <h4 class="text-base font-bold text-slate-900 dark:text-slate-100">추천 행동</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li v-for="(item, index) in (yesterdayReport.recommendations || [])" :key="`yesterday-recommend-${index}`">{{ item }}</li>
+                      <li v-if="!(yesterdayReport.recommendations || []).length" class="text-slate-400">아직 추천이 없습니다.</li>
+                    </ul>
+                  </div>
+                  <p v-if="yesterdayReportLoading" class="text-xs text-slate-400">평가 정보를 불러오는 중입니다...</p>
+                </div>
+              </div>
+
+              <div v-else-if="!yesterdayReportLoading" class="text-sm text-slate-500 dark:text-slate-400">
+                아직 어제 평가가 없습니다.
               </div>
             </div>
           </div>
@@ -218,14 +296,16 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { format } from 'date-fns';
+import { addDays, format, parseISO } from 'date-fns';
 import { getDailyMealSummary } from '@/services/mealService';
+import { getDailyReport } from '@/services/reportService';
 import breakfastIcon from '@/assets/breakfast.png';
 import lunchIcon from '@/assets/lunch.png';
 import dinnerIcon from '@/assets/dinner.png';
 import snackIcon from '@/assets/bablog_logo.png';
 
 const today = format(new Date(), 'yyyy-MM-dd');
+const yesterday = format(addDays(new Date(), -1), 'yyyy-MM-dd');
 const summary = ref({
   date: today,
   totals: {
@@ -254,6 +334,9 @@ const summary = ref({
 });
 const loadingSummary = ref(false);
 const summaryError = ref('');
+const yesterdayReport = ref(null);
+const yesterdayReportLoading = ref(false);
+const yesterdayReportError = ref('');
 
 const mealMeta = {
   BREAKFAST: { label: '아침', icon: breakfastIcon },
@@ -269,6 +352,83 @@ const formatNumber = (value) => {
   if (Number.isNaN(numeric)) return '0';
   return numeric % 1 === 0 ? numeric.toLocaleString() : numeric.toFixed(1);
 };
+
+const yesterdayScore = computed(() => {
+  if (yesterdayReport.value?.score !== undefined && yesterdayReport.value?.score !== null) {
+    return yesterdayReport.value.score;
+  }
+  return 0;
+});
+
+const yesterdayScoreOffset = computed(() => {
+  const clamped = Math.min(100, Math.max(0, yesterdayScore.value));
+  const total = 200;
+  return total - (total * clamped) / 100;
+});
+
+const yesterdayUpdatedAtText = computed(() => {
+  const updatedAt = yesterdayReport.value?.updatedAt;
+  if (!updatedAt) return '';
+  try {
+    return format(parseISO(updatedAt), 'MM.dd HH:mm');
+  } catch (error) {
+    return updatedAt;
+  }
+});
+
+const yesterdayGradeTheme = computed(() => {
+  const grade = yesterdayReport.value?.grade;
+  switch (grade) {
+    case '매우 우수':
+      return {
+        circleClass: 'text-emerald-500',
+        badgeClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        dotClass: 'bg-emerald-500',
+        icon: 'workspace_premium',
+        iconClass: 'text-emerald-600',
+      };
+    case '우수':
+      return {
+        circleClass: 'text-green-500',
+        badgeClass: 'border-green-200 bg-green-50 text-green-700',
+        dotClass: 'bg-green-500',
+        icon: 'verified',
+        iconClass: 'text-green-600',
+      };
+    case '보통':
+      return {
+        circleClass: 'text-amber-500',
+        badgeClass: 'border-amber-200 bg-amber-50 text-amber-700',
+        dotClass: 'bg-amber-500',
+        icon: 'insights',
+        iconClass: 'text-amber-600',
+      };
+    case '개선 필요':
+      return {
+        circleClass: 'text-orange-500',
+        badgeClass: 'border-orange-200 bg-orange-50 text-orange-700',
+        dotClass: 'bg-orange-500',
+        icon: 'warning',
+        iconClass: 'text-orange-600',
+      };
+    case '집중 개선 필요':
+      return {
+        circleClass: 'text-rose-500',
+        badgeClass: 'border-rose-200 bg-rose-50 text-rose-700',
+        dotClass: 'bg-rose-500',
+        icon: 'error',
+        iconClass: 'text-rose-600',
+      };
+    default:
+      return {
+        circleClass: 'text-primary',
+        badgeClass: 'border-primary/20 bg-primary/10 text-primary',
+        dotClass: 'bg-primary',
+        icon: 'check_circle',
+        iconClass: 'text-primary',
+      };
+  }
+});
 
 const mealSummaries = computed(() =>
   mealOrder.map((mealType) => {
@@ -383,8 +543,28 @@ const fetchSummary = async () => {
   }
 };
 
+const fetchYesterdayReport = async () => {
+  yesterdayReportLoading.value = true;
+  yesterdayReportError.value = '';
+  try {
+    const res = await getDailyReport(yesterday);
+    if (res?.status === 204) {
+      yesterdayReport.value = null;
+      return;
+    }
+    yesterdayReport.value = res?.data || null;
+  } catch (error) {
+    console.error('어제 평가 조회 실패', error);
+    yesterdayReportError.value = '어제 평가를 불러오지 못했습니다.';
+    yesterdayReport.value = null;
+  } finally {
+    yesterdayReportLoading.value = false;
+  }
+};
+
 onMounted(() => {
   fetchSummary();
+  fetchYesterdayReport();
 });
 
 const weekly = {

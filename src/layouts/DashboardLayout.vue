@@ -77,7 +77,7 @@
         </div>
       </div>
     </aside>
-    <main class="flex-1 overflow-y-auto overflow-x-auto bg-background-light dark:bg-background-dark">
+    <main class="flex-1 overflow-y-auto overflow-x-hidden bg-background-light dark:bg-background-dark">
       <router-view />
     </main>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-background-light px-8 py-10 text-text-light dark:bg-background-dark dark:text-text-dark">
-    <div class="mx-auto flex w-[1200px] min-w-[1200px] max-w-[1280px] flex-col gap-6">
+    <div class="mx-auto flex w-[1280px] flex-col gap-6">
       <header class="flex flex-col gap-2">
         <h1 class="text-3xl font-black leading-tight tracking-[-0.02em]">마이 페이지</h1>
         <p class="text-text-secondary-light dark:text-text-secondary-dark">회원 정보를 확인하고 비밀번호를 변경할 수 있습니다.</p>

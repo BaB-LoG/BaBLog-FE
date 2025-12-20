@@ -2,7 +2,7 @@
 <html class="light" lang="ko"><head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>냠냠코치 - 식단 기록</title>
+    <title>냠냠코치 - 식단 기록 (영양 상세)</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
@@ -184,284 +184,509 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                        <h2 class="text-slate-900 dark:text-slate-100 text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">종합 식단 평가</h2>
-                        <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
-                            <div class="flex-shrink-0 flex flex-col items-center gap-2 w-full md:w-32">
-                                <div class="relative size-24">
-                                    <svg class="size-full" viewBox="0 0 100 100">
-                                        <circle class="text-slate-200 dark:text-slate-700" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-width="10"></circle>
-                                        <circle class="text-primary" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-linecap="round" stroke-width="10" style="stroke-dasharray: 282.743; stroke-dashoffset: 84.823;"></circle>
-                                    </svg>
-                                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-slate-800 dark:text-slate-200">70<span class="text-base">%</span></span>
-                                </div>
-                                <p class="font-semibold text-slate-800 dark:text-slate-200">균형 잡힌 식단</p>
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-50/50 to-white dark:from-slate-800/20 dark:to-slate-900">
+                            <div>
+                                <h2 class="text-slate-900 dark:text-slate-100 text-[22px] font-bold leading-tight tracking-[-0.015em] flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">psychology</span>
+                                    종합 식단 평가
+                                </h2>
+                                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">AI가 분석한 오늘의 식단 리포트입니다.</p>
                             </div>
-                            <div class="flex-1">
-                                <p class="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">오늘의 식단은 전반적으로 균형이 잘 잡혀 있습니다. 특히 아침 식사를 통해 충분한 단백질을 섭취하신 점이 좋습니다. 다만, 목표 섭취량에 비해 칼로리와 탄수화물 섭취가 부족한 편입니다. 점심과 저녁 식사를 거르지 않고, 건강한 탄수화물과 채소를 추가하여 영양 목표를 달성해 보세요.</p>
-                                <div class="space-y-3">
-                                    <div class="flex items-start gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/30">
-                                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 mt-0.5">thumb_up</span>
-                                        <div>
-                                            <h4 class="font-bold text-green-800 dark:text-green-300">잘한 점</h4>
-                                            <p class="text-sm text-green-700 dark:text-green-400">아침 식단에 계란과 통밀빵을 포함하여 양질의 단백질과 복합 탄수화물을 섭취했습니다.</p>
+                            <button class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">refresh</span>
+                                재평가 받기
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                                <div class="w-full lg:w-1/3 flex flex-col gap-6">
+                                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center relative overflow-hidden">
+                                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50"></div>
+                                        <h3 class="font-bold text-slate-500 dark:text-slate-400 text-sm mb-4 tracking-wider uppercase">AI-Score</h3>
+                                        <div class="relative size-40 mb-2">
+                                            <svg class="size-full rotate-[135deg]" viewBox="0 0 100 100">
+                                                <circle class="text-slate-100 dark:text-slate-700" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="200" stroke-linecap="round" stroke-width="8"></circle>
+                                                <circle class="text-primary" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="140" stroke-dashoffset="0" stroke-linecap="round" stroke-width="8"></circle>
+                                            </svg>
+                                            <div class="absolute inset-0 flex flex-col items-center justify-center pt-2">
+                                                <span class="text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight">70</span>
+                                                <span class="text-sm font-medium text-slate-400 dark:text-slate-500 mt-1">/ 100</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold mb-2">
+                                                <span class="material-symbols-outlined text-[16px] mr-1">check_circle</span>
+                                                균형 잡힌 식단
+                                            </div>
+                                            <p class="text-xs text-slate-400 dark:text-slate-500">업데이트 10.26 14:00</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-start gap-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/30">
-                                        <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 mt-0.5">lightbulb</span>
-                                        <div>
-                                            <h4 class="font-bold text-orange-800 dark:text-orange-300">개선 제안</h4>
-                                            <p class="text-sm text-orange-700 dark:text-orange-400">점심과 저녁 식사를 추가하여 규칙적인 식사 패턴을 유지하고, 퀴노아, 현미밥과 같은 건강한 탄수화물과 다양한 색상의 채소를 더해보세요.</p>
+                                    <div class="bg-slate-800 dark:bg-slate-700 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
+                                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-all"></div>
+                                        <div class="relative z-10">
+                                            <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-primary">summarize</span>
+                                                요약
+                                            </h4>
+                                            <p class="text-slate-200 text-sm leading-relaxed font-medium">
+                                                "오늘의 식단은 전반적으로 균형이 잘 잡혀 있습니다. 특히 아침 식사를 통해 충분한 단백질을 섭취하신 점이 좋습니다. 다만, 목표 섭취량에 비해 칼로리와 탄수화물 섭취가 부족한 편입니다."
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-5 self-stretch">
+                                    <div class="bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30 rounded-2xl p-6 transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="size-10 rounded-full bg-green-100 dark:bg-green-800/40 flex items-center justify-center text-green-600 dark:text-green-400">
+                                                <span class="material-symbols-outlined">thumb_up</span>
+                                            </div>
+                                            <h4 class="font-bold text-green-800 dark:text-green-300 text-lg">잘한 점</h4>
+                                        </div>
+                                        <ul class="space-y-3">
+                                            <li class="flex items-start gap-2.5">
+                                                <span class="material-symbols-outlined text-green-500 text-[18px] mt-0.5">check_small</span>
+                                                <span class="text-green-700 dark:text-green-400 text-sm font-medium leading-relaxed">아침 식단에 계란과 통밀빵을 포함하여 양질의 단백질 섭취</span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span class="material-symbols-outlined text-green-500 text-[18px] mt-0.5">check_small</span>
+                                                <span class="text-green-700 dark:text-green-400 text-sm font-medium leading-relaxed">복합 탄수화물 위주의 식단 구성으로 혈당 관리 우수</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-2xl p-6 transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="size-10 rounded-full bg-amber-100 dark:bg-amber-800/40 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                                                <span class="material-symbols-outlined">lightbulb</span>
+                                            </div>
+                                            <h4 class="font-bold text-amber-800 dark:text-amber-300 text-lg">개선 제안</h4>
+                                        </div>
+                                        <ul class="space-y-3">
+                                            <li class="flex items-start gap-2.5">
+                                                <span class="material-symbols-outlined text-amber-500 text-[18px] mt-0.5">priority_high</span>
+                                                <span class="text-amber-700 dark:text-amber-400 text-sm font-medium leading-relaxed">점심 식사를 거르지 않고 규칙적인 식사 패턴 유지 필요</span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span class="material-symbols-outlined text-amber-500 text-[18px] mt-0.5">priority_high</span>
+                                                <span class="text-amber-700 dark:text-amber-400 text-sm font-medium leading-relaxed">건강한 탄수화물(퀴노아, 현미밥 등) 섭취량 늘리기</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="md:col-span-2 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-6 transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="size-10 rounded-full bg-blue-100 dark:bg-blue-800/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                                <span class="material-symbols-outlined">bolt</span>
+                                            </div>
+                                            <h4 class="font-bold text-blue-800 dark:text-blue-300 text-lg">추천 행동</h4>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                            <div class="bg-white dark:bg-slate-800/60 p-3 rounded-xl border border-blue-100 dark:border-blue-900/20 flex flex-col gap-2 items-center text-center">
+                                                <span class="material-symbols-outlined text-blue-500 text-2xl">lunch_dining</span>
+                                                <span class="text-blue-700 dark:text-blue-300 text-sm font-bold">점심 샐러드 추가</span>
+                                                <span class="text-slate-500 dark:text-slate-400 text-xs">닭가슴살 토핑 추천</span>
+                                            </div>
+                                            <div class="bg-white dark:bg-slate-800/60 p-3 rounded-xl border border-blue-100 dark:border-blue-900/20 flex flex-col gap-2 items-center text-center">
+                                                <span class="material-symbols-outlined text-blue-500 text-2xl">rice_bowl</span>
+                                                <span class="text-blue-700 dark:text-blue-300 text-sm font-bold">저녁 한식 구성</span>
+                                                <span class="text-slate-500 dark:text-slate-400 text-xs">가벼운 반찬 위주</span>
+                                            </div>
+                                            <div class="bg-white dark:bg-slate-800/60 p-3 rounded-xl border border-blue-100 dark:border-blue-900/20 flex flex-col gap-2 items-center text-center">
+                                                <span class="material-symbols-outlined text-blue-500 text-2xl">water_drop</span>
+                                                <span class="text-blue-700 dark:text-blue-300 text-sm font-bold">물 2L 섭취</span>
+                                                <span class="text-slate-500 dark:text-slate-400 text-xs">수분 보충 필수</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-6">
-                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">아침</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">아침</h3>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">계란 후라이</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">2개, 180 kcal</p>
                                     </div>
-                                    <ul class="space-y-3">
-                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-slate-800 dark:text-slate-200">계란 후라이</p>
-                                                <p class="text-sm text-slate-500 dark:text-slate-400">2개, 180 kcal</p>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">통밀빵</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">2조각, 160 kcal</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-5 mt-4">
+                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">analytics</span>
+                                    아침 영양 분석
+                                </h4>
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex items-center justify-between p-4 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/10">
+                                        <div>
+                                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">총 섭취 칼로리</span>
+                                            <div class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-1">340 <span class="text-sm font-normal text-slate-500">kcal</span></div>
+                                        </div>
+                                        <div class="size-10 rounded-full bg-primary/20 text-primary flex items-center justify-center">
+                                            <span class="material-symbols-outlined">local_fire_department</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">탄수화물</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-carb" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="40, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">35</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
                                             </div>
-                                            <div class="flex gap-2">
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">단백질</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-protein" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="25, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">18</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
                                             </div>
-                                        </li>
-                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-slate-800 dark:text-slate-200">통밀빵</p>
-                                                <p class="text-sm text-slate-500 dark:text-slate-400">2조각, 160 kcal</p>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">지방</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-fat" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="35, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">14</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
                                             </div>
-                                            <div class="flex gap-2">
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">아침 식사 영양 상세</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs">
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">340 kcal</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
-                                            <span class="font-bold text-carb">35 g</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">포화지방</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">3g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
-                                            <span class="font-bold text-protein">18 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">트랜스지방</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
-                                            <span class="font-bold text-fat">14 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">당류</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">4g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">3 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">나트륨</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">420mg</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">4 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">420 mg</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">370 mg</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">콜레스테롤</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">370mg</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">점심</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">점심</h3>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
+                                <p>점심 식사 기록이 없습니다.</p>
+                            </div>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-5 mt-4 opacity-50">
+                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">analytics</span>
+                                    점심 영양 분석
+                                </h4>
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <div>
+                                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">총 섭취 칼로리</span>
+                                            <div class="text-2xl font-black text-slate-400 dark:text-slate-500 mt-1">0 <span class="text-sm font-normal text-slate-500">kcal</span></div>
+                                        </div>
+                                        <div class="size-10 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-400 flex items-center justify-center">
+                                            <span class="material-symbols-outlined">local_fire_department</span>
+                                        </div>
                                     </div>
-                                    <div class="text-center py-6 text-slate-500 dark:text-slate-400 flex-1 flex items-center justify-center">
-                                        <p>점심 식사 기록이 없습니다.</p>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">탄수화물</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">단백질</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">지방</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">점심 식사 영양 상세</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs opacity-50">
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 kcal</span>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">포화지방</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
-                                            <span class="font-bold text-carb">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">트랜스지방</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
-                                            <span class="font-bold text-protein">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">당류</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
-                                            <span class="font-bold text-fat">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">나트륨</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0mg</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">콜레스테롤</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0mg</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">저녁</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">저녁</h3>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <div class="text-center py-6 text-slate-500 dark:text-slate-400">
+                                <p>저녁 식사 기록이 없습니다.</p>
+                            </div>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-5 mt-4 opacity-50">
+                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">analytics</span>
+                                    저녁 영양 분석
+                                </h4>
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <div>
+                                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">총 섭취 칼로리</span>
+                                            <div class="text-2xl font-black text-slate-400 dark:text-slate-500 mt-1">0 <span class="text-sm font-normal text-slate-500">kcal</span></div>
+                                        </div>
+                                        <div class="size-10 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-400 flex items-center justify-center">
+                                            <span class="material-symbols-outlined">local_fire_department</span>
+                                        </div>
                                     </div>
-                                    <div class="text-center py-6 text-slate-500 dark:text-slate-400 flex-1 flex items-center justify-center">
-                                        <p>저녁 식사 기록이 없습니다.</p>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">탄수화물</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">단백질</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">지방</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-400 dark:text-slate-500">0</span>
+                                                    <span class="text-[10px] text-slate-400 leading-none">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">저녁 식사 영양 상세</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs opacity-50">
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 kcal</span>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">포화지방</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
-                                            <span class="font-bold text-carb">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">트랜스지방</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
-                                            <span class="font-bold text-protein">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">당류</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
-                                            <span class="font-bold text-fat">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">나트륨</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0mg</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">콜레스테롤</span>
+                                            <span class="text-sm font-semibold text-slate-400 dark:text-slate-500">0mg</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">간식</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                                <div class="md:col-span-2 lg:col-span-2 flex flex-col gap-4">
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                                        <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                        <div class="flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">간식</h3>
+                            </div>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                                <input class="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-slate-800 dark:text-slate-200" placeholder="음식 이름을 검색하여 추가하세요" type="text"/>
+                            </div>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-slate-200">아몬드</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">한 줌 (30g), 170 kcal</p>
                                     </div>
-                                    <ul class="space-y-3">
-                                        <li class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-slate-800 dark:text-slate-200">아몬드</p>
-                                                <p class="text-sm text-slate-500 dark:text-slate-400">한 줌 (30g), 170 kcal</p>
+                                    <div class="flex gap-2">
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+                                        <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="border-t border-slate-200 dark:border-slate-700 pt-5 mt-4">
+                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">analytics</span>
+                                    간식 영양 분석
+                                </h4>
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex items-center justify-between p-4 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/10">
+                                        <div>
+                                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">총 섭취 칼로리</span>
+                                            <div class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-1">170 <span class="text-sm font-normal text-slate-500">kcal</span></div>
+                                        </div>
+                                        <div class="size-10 rounded-full bg-primary/20 text-primary flex items-center justify-center">
+                                            <span class="material-symbols-outlined">local_fire_department</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">탄수화물</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-carb" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="8, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">6</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
                                             </div>
-                                            <div class="flex gap-2">
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
-                                                <button class="text-slate-500 dark:text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">단백질</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-protein" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="8, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">6</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
                                             </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="md:col-span-1 lg:col-span-1 flex flex-col gap-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                                    <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">간식 영양 상세</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs">
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">칼로리</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">170 kcal</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">탄수화물</span>
-                                            <span class="font-bold text-carb">6 g</span>
+                                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-1">
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">지방</div>
+                                            <div class="relative size-12 md:size-14">
+                                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                                    <path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                                    <path class="text-fat" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="35, 100" stroke-width="3"></path>
+                                                </svg>
+                                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                                    <span class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-200">14</span>
+                                                    <span class="text-[10px] text-slate-500 leading-none">g</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">단백질</span>
-                                            <span class="font-bold text-protein">6 g</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">포화지방</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">1g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">지방</span>
-                                            <span class="font-bold text-fat">14 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">트랜스지방</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">0g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">포화지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">1 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">당류</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">1g</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">트랜스지방</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 g</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">나트륨</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">0mg</span>
                                         </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">당류</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">1 g</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">나트륨</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
-                                        </div>
-                                        <div class="flex flex-col p-2 bg-white dark:bg-slate-900 rounded-md items-center">
-                                            <span class="text-slate-500 dark:text-slate-400 text-xs">콜레스테롤</span>
-                                            <span class="font-bold text-slate-800 dark:text-slate-200">0 mg</span>
+                                        <div class="flex flex-col p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">콜레스테롤</span>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">0mg</span>
                                         </div>
                                     </div>
                                 </div>
