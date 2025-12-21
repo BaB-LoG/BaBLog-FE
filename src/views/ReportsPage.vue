@@ -1,10 +1,10 @@
 <template>
   <div class="p-8">
-    <div class="mx-auto flex max-w-6xl flex-col gap-6">
+    <div class="mx-auto flex w-[1200px] flex-col gap-6">
       <header class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
         <h1 class="text-2xl font-bold text-text-light dark:text-text-dark">리포트</h1>
         <p class="mt-2 text-text-secondary-light dark:text-text-secondary-dark">
-          날짜별 일간 평가와 주간 인사이트를 확인하세요.
+          일간 / 주간 식단 리포트를 확인하세요.
         </p>
       </header>
 
@@ -13,7 +13,7 @@
           <div>
             <h2 class="flex items-center gap-2 text-[22px] font-bold leading-tight tracking-[-0.015em] text-slate-900 dark:text-slate-100">
               <span class="material-symbols-outlined text-primary">psychology</span>
-              일간 식단 평가
+              일간 식단 리포트
             </h2>
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 whitespace-nowrap">선택한 날짜의 식단 평가를 확인합니다.</p>
           </div>
@@ -81,7 +81,7 @@
               </div>
             </div>
 
-            <div class="flex min-w-[560px] flex-1 flex-col gap-6">
+            <div class="flex flex-1 flex-col gap-6">
               <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-5 shadow-sm dark:border-emerald-500/30 dark:bg-emerald-500/10">
                 <div class="mb-3 flex items-center gap-2">
                   <span class="material-symbols-outlined text-primary">thumb_up</span>
@@ -128,7 +128,7 @@
           <div>
             <h2 class="flex items-center gap-3 text-2xl font-black tracking-tight text-text-light dark:text-text-dark">
               <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
-              이번 주 인사이트
+              주간 식단 리포트
             </h2>
             <div class="mt-1 flex items-center gap-2 text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark">
               <span class="rounded-full border border-border-light bg-background-light px-3 py-1 text-[11px] font-semibold text-text-light dark:border-border-dark dark:bg-background-dark dark:text-text-dark">

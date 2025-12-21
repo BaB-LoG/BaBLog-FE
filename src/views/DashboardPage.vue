@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-background-light px-8 py-10 text-text-light dark:bg-background-dark dark:text-text-dark">
-    <div class="mx-auto flex w-[1280px] flex-col gap-8">
+    <div class="mx-auto flex w-[1200px] flex-col gap-8">
       <header class="flex flex-col gap-2">
         <h1 class="text-3xl font-black leading-tight tracking-[-0.02em]">대시보드</h1>
         <p class="text-text-secondary-light dark:text-text-secondary-dark">
@@ -8,8 +8,8 @@
         </p>
       </header>
 
-      <div class="grid grid-cols-[3fr_1fr] gap-6">
-        <section class="flex flex-col gap-6">
+      <div class="grid grid-cols-8 gap-6">
+        <section class="flex flex-col col-span-6 gap-6">
           <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
             <div class="mb-4 flex items-center justify-between">
               <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em]">오늘의 식단 기록 요약</h2>
@@ -159,7 +159,7 @@
                   </div>
                 </div>
 
-                <div class="flex min-w-[560px] flex-1 flex-col gap-6">
+                <div class="flex flex-1 flex-col gap-6">
                   <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-5 shadow-sm dark:border-emerald-500/30 dark:bg-emerald-500/10">
                     <div class="mb-3 flex items-center gap-2">
                       <span class="material-symbols-outlined text-primary">thumb_up</span>
@@ -394,7 +394,7 @@
 
         </section>
 
-        <aside class="flex flex-col gap-6">
+        <aside class="flex flex-col gap-6 col-span-2">
             <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
               <div class="mb-4 flex items-center justify-between">
                 <h3 class="text-lg font-bold">일일 목표</h3>

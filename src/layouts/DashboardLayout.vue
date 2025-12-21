@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen overflow-hidden bg-background-light text-text-light dark:bg-background-dark dark:text-text-dark">
-    <aside class="sticky top-0 flex h-screen w-64 shrink-0 flex-col gap-4 border-r border-border-light bg-card-light p-4 dark:border-border-dark dark:bg-card-dark">
+    <aside class="sticky top-0 flex h-screen w-56 shrink-0 flex-col gap-4 border-r border-border-light bg-card-light p-4 dark:border-border-dark dark:bg-card-dark">
       <div class="text-lg font-bold">BaBLog</div>
       <nav class="flex flex-col gap-2">
         <router-link
@@ -40,13 +40,13 @@
           <span>목표 설정</span>
         </router-link>
       </nav>
-      <div class="relative mt-auto pt-2" ref="profileArea">
+      <div class="mt-auto pt-2" ref="profileArea">
         <button
           type="button"
-          class="flex w-full items-center gap-3 rounded-lg border border-transparent px-3 py-3 text-left transition hover:border-primary hover:bg-primary/5"
+          class="flex w-full items-center gap-3 rounded-lg border border-transparent py-3 text-left transition hover:border-primary hover:bg-primary/5"
           @click="toggleUserMenu"
         >
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full p-2 bg-primary/15 text-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
           <div class="flex flex-col">
