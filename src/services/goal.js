@@ -59,4 +59,11 @@ export default {
       params: { memberId, startDate, endDate },
     });
   },
+
+  // 월간 통계 조회
+  getMonthlyStats(memberId, year, month) {
+    return axios.get(`${GOAL_HISTORY_API_PREFIX}/stats`, {
+      params: { memberId, year, month },
+    });
+  },
 };

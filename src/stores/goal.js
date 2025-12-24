@@ -7,6 +7,7 @@ export const useGoalStore = defineStore('goal', {
         weeklyGoals: [],
         calendarHistories: [],
         calendarSummary: [],
+        monthlyStats: [],
         isLoading: false,
         error: null,
     }),
@@ -134,6 +135,15 @@ export const useGoalStore = defineStore('goal', {
                 this.calendarSummary = response.data;
             } catch (error) {
                 console.error('Failed to fetch calendar summary:', error);
+            }
+        },
+
+        async fetchMonthlyStats(memberId, year, month) {
+            try {
+                const response = await goalService.getMonthlyStats(memberId, year, month);
+                this.monthlyStats = response.data;
+            } catch (error) {
+                console.error('Failed to fetch monthly stats:', error);
             }
         },
 

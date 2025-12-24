@@ -152,6 +152,23 @@ watch(currentTab, (newTab) => {
   goalStore.fetchGoals(newTab);
 });
 
+// Watch for member info to fetch user-specific data
+watch(() => userStore.member?.id, (newId) => {
+  if (newId) {
+    const dateStr = format(new Date(), 'yyyy-MM-dd');
+    goalStore.fetchGoalHistories(newId, dateStr);
+    
+    // Fetch monthly stats
+    const now = new Date();
+    goalStore.fetchMonthlyStats(newId, now.getFullYear(), now.getMonth() + 1);
+    
+    // Refresh calendar if range is ready
+    if (currentMonthRange.value.start) {
+      refreshCalendarSummary();
+    }
+  }
+}, { immediate: true });
+
 // Watch for goal changes to refresh calendar summary (live updates)
 watch(() => [goalStore.dailyGoals, goalStore.weeklyGoals], () => {
   refreshCalendarSummary();
@@ -198,6 +215,16 @@ const refreshCalendarSummary = () => {
   const memberId = userStore.member?.id;
   if (memberId && currentMonthRange.value.start) {
     goalStore.fetchCalendarSummary(memberId, currentMonthRange.value.start, currentMonthRange.value.end);
+    refreshMonthlyStats();
+  }
+};
+
+const refreshMonthlyStats = () => {
+  const memberId = userStore.member?.id;
+  if (memberId && currentMonthRange.value.start) {
+    // Extract year and month from start date (yyyy-MM-dd)
+    const [year, month] = currentMonthRange.value.start.split('-').map(Number);
+    goalStore.fetchMonthlyStats(memberId, year, month);
   }
 };
 
@@ -216,11 +243,16 @@ const handleDateClick = async (date, shouldOpenModal = true) => {
 
 onMounted(() => {
   goalStore.fetchGoals('DAILY');
-  // Initial fetch for today but don't open modal
+  goalStore.fetchGoals('WEEKLY');
+  
   const memberId = userStore.member?.id;
   if(memberId) {
       const dateStr = format(new Date(), 'yyyy-MM-dd');
       goalStore.fetchGoalHistories(memberId, dateStr);
+      
+      // Explicitly fetch monthly stats for current month on load
+      const now = new Date();
+      goalStore.fetchMonthlyStats(memberId, now.getFullYear(), now.getMonth() + 1);
   }
 });
 </script>

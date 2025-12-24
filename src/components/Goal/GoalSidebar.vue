@@ -49,7 +49,7 @@
             </div>
             <div>
               <p class="text-sm font-extrabold text-gray-900">{{ bestGoal.title }}</p>
-              <p class="text-[11px] text-blue-600 font-bold">연속 달성 6일 🔥</p>
+              <p class="text-[11px] text-blue-600 font-bold">연속 달성 {{ bestGoal.maxStreak }}일 🔥</p>
             </div>
           </div>
         </div>
@@ -67,10 +67,10 @@
                 <div class="flex-1 h-1.5 bg-red-100 rounded-full overflow-hidden">
                   <div 
                     class="h-full bg-red-500 rounded-full transition-all duration-500"
-                    :style="{ width: `${(hardestGoal.progressValue / hardestGoal.targetValue) * 100}%` }"
+                    :style="{ width: `${hardestGoal.avgAchievementRate}%` }"
                   ></div>
                 </div>
-                <span class="text-[11px] font-bold text-red-600 whitespace-nowrap">달성률 {{ Math.round((hardestGoal.progressValue / hardestGoal.targetValue) * 100) }}%</span>
+                <span class="text-[11px] font-bold text-red-600 whitespace-nowrap">달성률 {{ Math.round(hardestGoal.avgAchievementRate) }}%</span>
               </div>
             </div>
           </div>
@@ -145,25 +145,105 @@ const weeklyAchievementRate = computed(() => {
   return Math.round((weeklyCompletedCount.value / weeklyTotalCount.value) * 100);
 });
 
-// 베스트/워스트 목표 (일일 목표 중에서만 선별)
+// Helper to identify goal type (robust check)
+const isDaily = (type) => {
+  if (!type) return false;
+  const t = (typeof type === 'object' ? type.name || type.key || '' : String(type)).toUpperCase();
+  return t === 'DAILY';
+};
+
+// 베스트/워스트 목표 (월간 통계 기반 - 데일리 목표 한정)
 const bestGoal = computed(() => {
-  const goals = goalStore.dailyGoals;
-  if (goals.length === 0) return null;
-  return goals.reduce((prev, curr) => {
-    const prevRate = prev.targetValue > 0 ? (prev.progressValue / prev.targetValue) : 0;
-    const currRate = curr.targetValue > 0 ? (curr.progressValue / curr.targetValue) : 0;
-    return (currRate >= prevRate) ? curr : prev;
-  });
+  const stats = (goalStore.monthlyStats || []).filter(s => s && isDaily(s.goalType));
+  const dailyGoals = (goalStore.dailyGoals || []);
+  
+  // 1. 후보군 생성
+  const candidates = [];
+  const seenIds = new Set();
+
+  // 월간 통계 데이터 추가
+  for (const s of stats) {
+    candidates.push({
+      id: s.goalId,
+      title: s.title,
+      maxStreak: s.maxStreak || 0,
+      avgAchievementRate: s.avgAchievementRate || 0
+    });
+    seenIds.add(Number(s.goalId));
+  }
+
+  // 오늘 목표 중 통계에 아직 없는 것 추가 (Fallback)
+  for (const g of dailyGoals) {
+    if (g && !seenIds.has(Number(g.id))) {
+      const rate = g.targetValue > 0 ? (g.progressValue / g.targetValue) * 100 : 0;
+      candidates.push({
+        id: g.id,
+        title: g.title,
+        maxStreak: g.isCompleted ? 1 : 0,
+        avgAchievementRate: rate
+      });
+    }
+  }
+
+  if (candidates.length === 0) return null;
+
+  // 2. 최선의 목표 찾기 (연속 달성일 우선, 차선으로 달성률)
+  let best = candidates[0];
+  for (let i = 1; i < candidates.length; i++) {
+    const curr = candidates[i];
+    if (curr.maxStreak > best.maxStreak) {
+      best = curr;
+    } else if (curr.maxStreak === best.maxStreak) {
+      if (curr.avgAchievementRate > best.avgAchievementRate) {
+        best = curr;
+      }
+    }
+  }
+  return best;
 });
 
 const hardestGoal = computed(() => {
-  const goals = goalStore.dailyGoals.filter(g => !g.isCompleted);
-  if (goals.length === 0) return null;
-  return goals.reduce((prev, curr) => {
-    const prevRate = prev.targetValue > 0 ? (prev.progressValue / prev.targetValue) : 0;
-    const currRate = curr.targetValue > 0 ? (curr.progressValue / curr.targetValue) : 0;
-    return (currRate < prevRate) ? curr : prev;
-  });
+  const stats = (goalStore.monthlyStats || []).filter(s => s && isDaily(s.goalType));
+  const dailyGoals = (goalStore.dailyGoals || []);
+  
+  const candidates = [];
+  const seenIds = new Set();
+
+  for (const s of stats) {
+    candidates.push({
+      id: s.goalId,
+      title: s.title,
+      maxStreak: s.maxStreak || 0,
+      avgAchievementRate: s.avgAchievementRate || 0
+    });
+    seenIds.add(Number(s.goalId));
+  }
+
+  for (const g of dailyGoals) {
+    if (g && !seenIds.has(Number(g.id))) {
+      const rate = g.targetValue > 0 ? (g.progressValue / g.targetValue) * 100 : 0;
+      candidates.push({
+        id: g.id,
+        title: g.title,
+        maxStreak: 0,
+        avgAchievementRate: rate
+      });
+    }
+  }
+
+  if (candidates.length === 0) return null;
+
+  // 3. 가장 어려운 목표 찾기 (달성률 낮은 순 - 미완료 목표 우선)
+  const incomplete = candidates.filter(c => c.avgAchievementRate < 100);
+  const targetSet = incomplete.length > 0 ? incomplete : candidates;
+
+  let hardest = targetSet[0];
+  for (let i = 1; i < targetSet.length; i++) {
+    if (targetSet[i].avgAchievementRate < hardest.avgAchievementRate) {
+      hardest = targetSet[i];
+    }
+  }
+  return hardest;
 });
 
 </script>
