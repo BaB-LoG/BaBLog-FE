@@ -59,7 +59,7 @@
         </div>
 
         <!-- Section 2: Calendar -->
-        <GoalCalendar @dateClick="handleDateClick" />
+        <GoalCalendar @dateClick="handleDateClick" @monthChange="handleMonthChange" />
         
       </div>
 
@@ -140,6 +140,8 @@ const currentGoals = computed(() => {
   return currentTab.value === 'DAILY' ? goalStore.dailyGoals : goalStore.weeklyGoals;
 });
 
+const currentMonthRange = ref({ start: '', end: '' });
+
 const selectedDateHistories = computed(() => goalStore.calendarHistories);
 
 // overallProgress and completedCount logic can stay if needed, 
@@ -149,6 +151,11 @@ const selectedDateHistories = computed(() => goalStore.calendarHistories);
 watch(currentTab, (newTab) => {
   goalStore.fetchGoals(newTab);
 });
+
+// Watch for goal changes to refresh calendar summary (live updates)
+watch(() => [goalStore.dailyGoals, goalStore.weeklyGoals], () => {
+  refreshCalendarSummary();
+}, { deep: true });
 
 const openDetailModal = (goal, contextType) => {
     selectedGoalId.value = goal.id;
@@ -174,10 +181,24 @@ const openDetailFromHistory = (goal) => {
 
 const handleGoalSaved = async () => {
     await goalStore.fetchGoals(currentTab.value);
+    refreshCalendarSummary();
 };
 
 const handleGoalDeleted = async () => {
     await goalStore.fetchGoals(currentTab.value);
+    refreshCalendarSummary();
+};
+
+const handleMonthChange = (range) => {
+  currentMonthRange.value = range;
+  refreshCalendarSummary();
+};
+
+const refreshCalendarSummary = () => {
+  const memberId = userStore.member?.id;
+  if (memberId && currentMonthRange.value.start) {
+    goalStore.fetchCalendarSummary(memberId, currentMonthRange.value.start, currentMonthRange.value.end);
+  }
 };
 
 const handleDateClick = async (date, shouldOpenModal = true) => {

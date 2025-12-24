@@ -6,6 +6,7 @@ export const useGoalStore = defineStore('goal', {
         dailyGoals: [],
         weeklyGoals: [],
         calendarHistories: [],
+        calendarSummary: [],
         isLoading: false,
         error: null,
     }),
@@ -124,6 +125,15 @@ export const useGoalStore = defineStore('goal', {
                 this.calendarHistories = response.data;
             } catch (error) {
                 console.error('Failed to fetch goal histories:', error);
+            }
+        },
+
+        async fetchCalendarSummary(memberId, startDate, endDate) {
+            try {
+                const response = await goalService.getCalendarSummary(memberId, startDate, endDate);
+                this.calendarSummary = response.data;
+            } catch (error) {
+                console.error('Failed to fetch calendar summary:', error);
             }
         },
 

@@ -52,4 +52,11 @@ export default {
   deleteGoal(goalId) {
     return axios.delete(`${GOAL_API_PREFIX}/${goalId}`);
   },
+
+  // 달력 요약 정보 조회
+  getCalendarSummary(memberId, startDate, endDate) {
+    return axios.get(`${GOAL_HISTORY_API_PREFIX}/calendar`, {
+      params: { memberId, startDate, endDate },
+    });
+  },
 };
