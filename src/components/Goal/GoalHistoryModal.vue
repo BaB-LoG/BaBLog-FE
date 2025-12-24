@@ -38,13 +38,37 @@
                   </button>
                 </div>
 
+                <div class="flex gap-6 mb-6 border-b border-gray-100 pb-2">
+                  <button 
+                    @click="currentTab = 'DAILY'"
+                    class="pb-2 text-sm font-bold transition-colors relative"
+                    :class="currentTab === 'DAILY' ? 'text-green-600' : 'text-gray-400 hover:text-gray-600'"
+                  >
+                    오늘의 목표
+                    <div v-if="currentTab === 'DAILY'" class="absolute bottom-[-9px] left-0 w-full h-0.5 bg-green-500 rounded-t-full"></div>
+                  </button>
+                  <button 
+                    @click="currentTab = 'WEEKLY'"
+                    class="pb-2 text-sm font-bold transition-colors relative"
+                    :class="currentTab === 'WEEKLY' ? 'text-green-600' : 'text-gray-400 hover:text-gray-600'"
+                  >
+                    주간 목표
+                    <div v-if="currentTab === 'WEEKLY'" class="absolute bottom-[-9px] left-0 w-full h-0.5 bg-green-500 rounded-t-full"></div>
+                  </button>
+                </div>
+
                 <div class="max-h-[60vh] overflow-y-auto pr-2">
-                  <GoalList 
-                    :goals="histories" 
-                    type="HISTORY" 
-                    :readonly="true" 
-                    @goalClick="$emit('goalClick', $event)"
-                  />
+                  <div v-if="filteredHistories.length > 0">
+                    <GoalList 
+                      :goals="filteredHistories" 
+                      type="HISTORY" 
+                      :readonly="true" 
+                      @goalClick="$emit('goalClick', $event)"
+                    />
+                  </div>
+                  <div v-else class="py-12 text-center text-gray-400">
+                    <p class="text-sm">기록이 없습니다.</p>
+                  </div>
                 </div>
               </div>
 
@@ -66,7 +90,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { format } from 'date-fns';
 import GoalList from './GoalList.vue';
 
@@ -86,6 +110,13 @@ const props = defineProps({
 });
 
 defineEmits(['close', 'goalClick']);
+
+const currentTab = ref('DAILY');
+
+const filteredHistories = computed(() => {
+  if (!props.histories) return [];
+  return props.histories.filter(h => h.goalType === currentTab.value);
+});
 
 const formattedDate = computed(() => {
   if (!props.date) return '';

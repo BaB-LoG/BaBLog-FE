@@ -196,12 +196,24 @@ watch(isIndefinite, (val) => {
 
 const handleSubmit = async () => {
   try {
+    // Ensure startDate is present. If missing in form (e.g. from goalToEdit), default to today.
+    // Ideally we should have the real start date, but if missing, Today is a safe fallback for Daily goals.
+    const safeStartDate = form.value.startDate || new Date().toISOString().split('T')[0];
+    
     const payload = {
-      ...form.value,
+      id: props.goalToEdit?.id,
+      title: form.value.title,
+      targetValue: form.value.targetValue,
+      progressValue: form.value.progressValue || 0, // Ensure progress is preserved
+      clickPerProgress: form.value.clickPerProgress,
+      goalType: form.value.goalType,
+      startDate: safeStartDate,
       endDate: form.value.endDate || null
     };
 
     if (isEditMode.value) {
+      // For updates, we just need to send the fields that changed, or full object.
+      // Backend likely expects full object or merges.
       await goalStore.updateGoal(props.goalToEdit.id, payload);
       alert('목표가 수정되었습니다.');
     } else {
@@ -211,6 +223,7 @@ const handleSubmit = async () => {
     emit('saved');
     emit('close');
   } catch (error) {
+    console.error(error);
     alert(isEditMode.value ? '목표 수정실패' : '목표 등록 실패');
   }
 };

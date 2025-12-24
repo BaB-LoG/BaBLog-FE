@@ -126,5 +126,21 @@ export const useGoalStore = defineStore('goal', {
                 console.error('Failed to fetch goal histories:', error);
             }
         },
+
+        async deleteGoal(goalId) {
+            this.isLoading = true;
+            try {
+                await goalService.deleteGoal(goalId);
+                // Remove from local lists
+                this.dailyGoals = this.dailyGoals.filter(g => g.id !== goalId);
+                this.weeklyGoals = this.weeklyGoals.filter(g => g.id !== goalId);
+                this.calendarHistories = this.calendarHistories.filter(g => g.id !== goalId);
+            } catch (error) {
+                this.error = error;
+                throw error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
     },
 });

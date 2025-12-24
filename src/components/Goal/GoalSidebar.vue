@@ -40,8 +40,9 @@
       </div>
 
       <div class="border-t border-gray-100 pt-6 space-y-6">
+        <!-- 이번 달 베스트 목표 -->
         <div v-if="bestGoal" class="space-y-3">
-          <h4 class="text-sm font-extrabold text-gray-900">이번 주 베스트 목표</h4>
+          <h4 class="text-sm font-extrabold text-gray-900">이번 달 베스트 목표</h4>
           <div class="bg-blue-50/60 p-4 rounded-2xl flex items-center gap-4">
             <div class="bg-white p-2.5 rounded-2xl shadow-sm">
                <span class="text-xl">💧</span>
@@ -53,8 +54,9 @@
           </div>
         </div>
 
+        <!-- 이번 달 가장 어려운 목표 -->
         <div v-if="hardestGoal" class="space-y-3">
-          <h4 class="text-sm font-extrabold text-gray-900">이번 주 가장 어려운 목표</h4>
+          <h4 class="text-sm font-extrabold text-gray-900">이번 달 가장 어려운 목표</h4>
           <div class="bg-red-50/60 p-4 rounded-2xl flex items-center gap-4">
             <div class="bg-white p-2.5 rounded-2xl shadow-sm">
                <span class="text-xl">🏃</span>

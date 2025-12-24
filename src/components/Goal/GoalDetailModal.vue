@@ -44,7 +44,7 @@
       </div>
 
       <!-- Progress Adjuster -->
-      <div v-if="!isReadonly" class="mb-8 p-6 bg-white border border-gray-100 rounded-2xl shadow-inner">
+      <div class="mb-8 p-6 bg-white border border-gray-100 rounded-2xl shadow-inner">
         <div class="flex justify-between items-center mb-4">
            <p class="text-sm font-bold text-gray-700">진행도 조절 <span class="text-xs font-normal text-gray-400 ml-1">클릭당 {{ goal.clickPerProgress }}씩 변화</span></p>
         </div>
@@ -86,9 +86,6 @@
            </button>
         </div>
       </div>
-      <div v-else class="mb-8 p-6 bg-gray-50 border border-dashed border-gray-200 rounded-2xl text-center text-gray-400 text-sm">
-          과거 기록은 수정할 수 없습니다.
-      </div>
 
       <!-- Action Buttons -->
       <div class="flex gap-3">
@@ -103,7 +100,6 @@
           수정하기
         </button>
         <button 
-          v-if="!isReadonly"
           @click="handleDelete"
           class="flex-1 py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
         >
@@ -113,7 +109,6 @@
           삭제
         </button>
         <button 
-          v-else
           @click="$emit('close')"
           class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold transition-colors flex items-center justify-center"
         >
@@ -150,7 +145,7 @@ const progressPercentage = computed(() => {
 });
 
 const increaseProgress = async () => {
-  if (isLoading.value || props.isReadonly) return;
+  if (isLoading.value) return;
   isLoading.value = true;
   try {
     await goalStore.increaseProgress(props.goal.id, props.contextType);
@@ -163,7 +158,7 @@ const increaseProgress = async () => {
 };
 
 const decreaseProgress = async () => {
-  if (isLoading.value || props.isReadonly) return;
+  if (isLoading.value) return;
   isLoading.value = true;
   try {
     await goalStore.decreaseProgress(props.goal.id, props.contextType);
@@ -182,7 +177,8 @@ const handleDelete = async () => {
     emit('deleted');
     emit('close');
   } catch (e) {
-    alert('삭제 실패');
+    console.error(e);
+    alert('삭제 실패: ' + (e.response?.data?.message || e.message));
   }
 };
 </script>
