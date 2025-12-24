@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full lg:w-80 space-y-6">
+  <div class="w-80 shrink-0 space-y-6">
     <!-- 오늘의 요약 카드 -->
     <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
       <h3 class="text-lg font-extrabold text-gray-900">오늘의 요약</h3>

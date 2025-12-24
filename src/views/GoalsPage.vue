@@ -1,17 +1,17 @@
 <template>
-  <div class="p-8 max-w-7xl mx-auto">
-    <div class="flex flex-col lg:flex-row gap-8">
+  <div class="mt-8 max-w-7xl mx-auto min-w-[1200px]">
+    <!-- Header & Add Goal Button -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-2xl font-bold text-gray-900">목표 설정 및 관리</h1>
+      <div class="text-sm text-gray-500">
+         <!-- Optional breadcrumbs or info -->
+      </div>
+    </div>
+
+    <div class="flex gap-8">
       
       <!-- Main Content Area -->
-      <div class="flex-1 space-y-8">
-        
-        <!-- Header & Add Goal Button -->
-        <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-bold text-gray-900">목표 설정 및 관리</h1>
-          <div class="text-sm text-gray-500">
-             <!-- Optional breadcrumbs or info -->
-          </div>
-        </div>
+      <div class="flex-none w-[800px] space-y-8">
 
         <!-- Section 1: Goal List -->
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
