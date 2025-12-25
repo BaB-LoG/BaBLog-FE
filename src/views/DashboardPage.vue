@@ -403,47 +403,45 @@
                 </router-link>
               </div>
             <div class="flex flex-col gap-4">
-              <div v-for="goal in dailyGoals" :key="goal.label" class="flex flex-col gap-2">
+              <div v-for="goal in goalStore.dailyGoals" :key="goal.id" class="flex flex-col gap-2">
                 <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium">{{ goal.label }}</p>
-                  <p class="text-sm font-semibold" :class="goal.progress === 100 ? 'text-primary' : ''">{{ goal.progress }}%</p>
+                  <p class="text-sm font-medium">{{ goal.title }}</p>
+                  <p class="text-sm font-semibold" :class="calculateProgress(goal) === 100 ? 'text-primary' : ''">
+                    {{ calculateProgress(goal) === 100 ? '달성' : calculateProgress(goal) + '%' }}
+                  </p>
                 </div>
-                <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark">
-                  <div class="h-full rounded-full bg-primary" :style="{ width: goal.progress + '%' }" />
+                <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark overflow-hidden">
+                  <div class="h-full rounded-full bg-primary" :style="{ width: calculateProgress(goal) + '%' }" />
                 </div>
+              </div>
+              <div v-if="goalStore.dailyGoals.length === 0" class="text-sm text-gray-400 text-center py-4">
+                등록된 일일 목표가 없습니다.
               </div>
             </div>
           </div>
 
           <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
-            <h3 class="text-lg font-bold">주간 목표</h3>
-            <div class="mt-4 flex flex-col gap-4">
-              <div v-for="goal in weeklyGoals" :key="goal.label" class="flex flex-col gap-2">
+            <h3 class="text-lg font-bold mb-4">주간 목표</h3>
+            <div class="flex flex-col gap-4">
+              <div v-for="goal in goalStore.weeklyGoals" :key="goal.id" class="flex flex-col gap-2">
                 <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium">{{ goal.label }}</p>
-                  <p class="text-sm font-semibold">{{ goal.progress }}%</p>
+                  <p class="text-sm font-medium">{{ goal.title }}</p>
+                  <p class="text-sm font-semibold" :class="calculateProgress(goal) === 100 ? 'text-primary' : ''">
+                    {{ calculateProgress(goal) === 100 ? '달성' : calculateProgress(goal) + '%' }}
+                  </p>
                 </div>
-                <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark">
-                  <div class="h-full rounded-full bg-primary" :style="{ width: goal.progress + '%' }" />
+                <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark overflow-hidden">
+                  <div class="h-full rounded-full bg-primary" :style="{ width: calculateProgress(goal) + '%' }" />
                 </div>
+              </div>
+              <div v-if="goalStore.weeklyGoals.length === 0" class="text-sm text-gray-400 text-center py-4">
+                등록된 주간 목표가 없습니다.
               </div>
             </div>
           </div>
 
-          <div class="rounded-xl border border-border-light bg-card-light p-6 shadow-sm dark:border-border-dark dark:bg-card-dark">
-            <h3 class="text-lg font-bold">기간 목표</h3>
-            <div class="mt-4 flex flex-col gap-4">
-              <div v-for="goal in longTermGoals" :key="goal.label" class="flex flex-col gap-2">
-                <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium">{{ goal.label }}</p>
-                  <p class="text-sm font-semibold">{{ goal.progress }}%</p>
-                </div>
-                <div class="h-2 w-full rounded-full bg-border-light dark:bg-border-dark">
-                  <div class="h-full rounded-full bg-primary" :style="{ width: goal.progress + '%' }" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- 오늘의 요약 카드 -->
+          <TodaySummaryCard />
         </aside>
       </div>
     </div>
@@ -453,12 +451,14 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { addDays, format, parseISO } from 'date-fns';
+import { useGoalStore } from '@/stores/goal';
 import { getDailyMealSummary } from '@/services/mealService';
 import { getDailyReport, getWeeklyReport } from '@/services/reportService';
 import breakfastIcon from '@/assets/breakfast.png';
 import lunchIcon from '@/assets/lunch.png';
 import dinnerIcon from '@/assets/dinner.png';
 import snackIcon from '@/assets/bablog_logo.png';
+import TodaySummaryCard from '@/components/Goal/TodaySummaryCard.vue';
 
 const today = format(new Date(), 'yyyy-MM-dd');
 const yesterday = format(addDays(new Date(), -1), 'yyyy-MM-dd');
@@ -821,24 +821,19 @@ const fetchWeeklyReport = async () => {
   }
 };
 
+const goalStore = useGoalStore();
+
+const calculateProgress = (goal) => {
+  if (!goal.targetValue || goal.targetValue === 0) return 0;
+  return Math.min(Math.round((Number(goal.progressValue) / Number(goal.targetValue)) * 100), 100);
+};
+
 onMounted(() => {
   fetchSummary();
   fetchYesterdayReport();
   fetchWeeklyReport();
+  goalStore.fetchGoals('DAILY');
+  goalStore.fetchGoals('WEEKLY');
 });
 
-const dailyGoals = [
-  { label: '물 2L 마시기', progress: 100 },
-  { label: '점심 후 15분 산책', progress: 0 },
-];
-
-const weeklyGoals = [
-  { label: '운동 3회 이상 하기', progress: 66 },
-  { label: '채소 5종류 먹기', progress: 80 },
-];
-
-const longTermGoals = [
-  { label: '체지방 2kg 감량', progress: 45 },
-  { label: '3개월 식단 기록 유지', progress: 75 },
-];
 </script>
