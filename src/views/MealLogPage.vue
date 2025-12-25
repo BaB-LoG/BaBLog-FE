@@ -1,6 +1,6 @@
 <template>
   <div class="px-10 py-6">
-    <div class="mx-auto flex w-[1280px] flex-col gap-6">
+    <div class="mx-auto flex w-[1200px] flex-col gap-6">
       <header class="flex flex-row items-center justify-between gap-4">
         <div class="space-y-2">
           <p class="text-4xl font-black leading-tight tracking-[-0.033em] text-slate-900 dark:text-slate-100">
