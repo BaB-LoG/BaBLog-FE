@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
-    <h3 class="text-lg font-extrabold text-gray-900">오늘의 요약</h3>
+    <h3 class="text-lg font-extrabold text-gray-900">오늘의 목표 요약</h3>
     
     <!-- 요약 그리드 -->
     <div class="grid grid-cols-3 gap-3">
