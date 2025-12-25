@@ -66,4 +66,18 @@ export default {
       params: { memberId, year, month },
     });
   },
+
+  // 오늘의 요약 통계 조회
+  getTodaySummary(memberId) {
+    return axios.get(`${GOAL_HISTORY_API_PREFIX}/summary/today`, {
+      params: { memberId },
+    });
+  },
+
+  // 베스트/워스트 목표 조회
+  getStatsHighlights(memberId, year, month) {
+    return axios.get(`${GOAL_HISTORY_API_PREFIX}/stats/highlights`, {
+      params: { memberId, year, month },
+    });
+  },
 };

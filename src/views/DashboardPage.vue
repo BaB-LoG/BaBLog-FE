@@ -439,6 +439,9 @@
               </div>
             </div>
           </div>
+
+          <!-- 오늘의 요약 카드 -->
+          <TodaySummaryCard />
         </aside>
       </div>
     </div>
@@ -455,6 +458,7 @@ import breakfastIcon from '@/assets/breakfast.png';
 import lunchIcon from '@/assets/lunch.png';
 import dinnerIcon from '@/assets/dinner.png';
 import snackIcon from '@/assets/bablog_logo.png';
+import TodaySummaryCard from '@/components/Goal/TodaySummaryCard.vue';
 
 const today = format(new Date(), 'yyyy-MM-dd');
 const yesterday = format(addDays(new Date(), -1), 'yyyy-MM-dd');

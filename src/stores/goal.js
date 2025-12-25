@@ -8,13 +8,43 @@ export const useGoalStore = defineStore('goal', {
         calendarHistories: [],
         calendarSummary: [],
         monthlyStats: [],
+        todaySummary: null,
+        statsHighlights: null,
         isLoading: false,
         error: null,
     }),
     getters: {
-        // 목표 달성률 계산 로직 등이 필요하면 추가
+        // 기존 getters
         completedDailyGoals: (state) => state.dailyGoals.filter(g => g.progressValue >= g.targetValue),
         activeDailyGoals: (state) => state.dailyGoals.filter(g => g.progressValue < g.targetValue),
+
+        // 일일 목표 통계 (실시간)
+        dailyStats: (state) => {
+            const goals = state.dailyGoals;
+            const completed = goals.filter(g => g.isCompleted).length;
+            const inProgress = goals.length - completed;
+
+            let achievementRate = 0;
+            if (goals.length > 0) {
+                const totalRate = goals.reduce((acc, g) => {
+                    const rate = g.targetValue > 0 ? (g.progressValue / g.targetValue) : 0;
+                    return acc + Math.min(rate, 1);
+                }, 0);
+                achievementRate = Math.round((totalRate / goals.length) * 100);
+            }
+
+            return { completed, inProgress, achievementRate };
+        },
+
+        // 주간 목표 통계 (실시간)
+        weeklyStats: (state) => {
+            const goals = state.weeklyGoals;
+            const total = goals.length;
+            const completed = goals.filter(g => g.isCompleted).length;
+            const achievementRate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            return { total, completed, achievementRate };
+        },
     },
     actions: {
         async fetchGoals(goalType) {
@@ -160,6 +190,24 @@ export const useGoalStore = defineStore('goal', {
                 throw error;
             } finally {
                 this.isLoading = false;
+            }
+        },
+
+        async fetchTodaySummary(memberId) {
+            try {
+                const response = await goalService.getTodaySummary(memberId);
+                this.todaySummary = response.data;
+            } catch (error) {
+                console.error('Failed to fetch today summary:', error);
+            }
+        },
+
+        async fetchStatsHighlights(memberId, year, month) {
+            try {
+                const response = await goalService.getStatsHighlights(memberId, year, month);
+                this.statsHighlights = response.data;
+            } catch (error) {
+                console.error('Failed to fetch stats highlights:', error);
             }
         },
     },

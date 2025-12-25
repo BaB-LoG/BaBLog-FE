@@ -1,80 +1,48 @@
 <template>
   <div class="w-80 shrink-0 space-y-6">
     <!-- 오늘의 요약 카드 -->
-    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
-      <h3 class="text-lg font-extrabold text-gray-900">오늘의 요약</h3>
-      
-      <!-- 요약 그리드 -->
-      <div class="grid grid-cols-3 gap-3">
-        <div class="bg-green-50 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
-          <div class="bg-green-500 rounded-full p-1 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <p class="text-[11px] text-gray-400 font-bold mb-1">완료</p>
-          <p class="text-sm font-extrabold text-gray-900">{{ dailyCompletedCount }}<span class="text-xs font-bold text-gray-500 ml-0.5">개</span></p>
-        </div>
-        
-        <div class="bg-blue-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center border border-blue-50">
-          <div class="bg-blue-400 rounded-full p-1 mb-3">
-             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-               <circle cx="10" cy="10" r="3" />
-               <circle cx="5" cy="10" r="1.5" opacity="0.6"/>
-               <circle cx="15" cy="10" r="1.5" opacity="0.6"/>
-             </svg>
-          </div>
-          <p class="text-[11px] text-gray-400 font-bold mb-1">진행 중</p>
-          <p class="text-sm font-extrabold text-gray-900">{{ dailyInProgressCount }}<span class="text-xs font-bold text-gray-500 ml-0.5">개</span></p>
-        </div>
+    <TodaySummaryCard />
 
-        <div class="bg-indigo-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center border border-indigo-50">
-          <div class="mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-            </svg>
+    <!-- 이번 달 베스트/워스트 목표 카드 -->
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
+      <!-- 이번 달 베스트 목표 -->
+      <div v-if="bestGoal" class="space-y-3">
+        <h4 class="text-sm font-extrabold text-gray-900">이번 달 베스트 목표</h4>
+        <div class="bg-blue-50/60 p-4 rounded-2xl flex items-center gap-4">
+          <div class="bg-white p-2.5 rounded-2xl shadow-sm">
+             <span class="text-xl">💧</span>
           </div>
-          <p class="text-[11px] text-gray-400 font-bold mb-1">오늘의 목표 달성률</p>
-          <p class="text-sm font-extrabold text-gray-900">{{ dailyAchievementRate }}<span class="text-xs font-bold text-gray-500 ml-0.5">%</span></p>
+          <div>
+            <p class="text-sm font-extrabold text-gray-900">{{ bestGoal.title }}</p>
+            <p class="text-[11px] text-blue-600 font-bold">연속 달성 {{ bestGoal.maxStreak }}일 🔥</p>
+          </div>
         </div>
       </div>
 
-      <div class="border-t border-gray-100 pt-6 space-y-6">
-        <!-- 이번 달 베스트 목표 -->
-        <div v-if="bestGoal" class="space-y-3">
-          <h4 class="text-sm font-extrabold text-gray-900">이번 달 베스트 목표</h4>
-          <div class="bg-blue-50/60 p-4 rounded-2xl flex items-center gap-4">
-            <div class="bg-white p-2.5 rounded-2xl shadow-sm">
-               <span class="text-xl">💧</span>
-            </div>
-            <div>
-              <p class="text-sm font-extrabold text-gray-900">{{ bestGoal.title }}</p>
-              <p class="text-[11px] text-blue-600 font-bold">연속 달성 {{ bestGoal.maxStreak }}일 🔥</p>
-            </div>
+      <!-- 이번 달 가장 어려운 목표 -->
+      <div v-if="hardestGoal" class="space-y-3">
+        <h4 class="text-sm font-extrabold text-gray-900">이번 달 가장 어려운 목표</h4>
+        <div class="bg-red-50/60 p-4 rounded-2xl flex items-center gap-4">
+          <div class="bg-white p-2.5 rounded-2xl shadow-sm">
+             <span class="text-xl">🏃</span>
           </div>
-        </div>
-
-        <!-- 이번 달 가장 어려운 목표 -->
-        <div v-if="hardestGoal" class="space-y-3">
-          <h4 class="text-sm font-extrabold text-gray-900">이번 달 가장 어려운 목표</h4>
-          <div class="bg-red-50/60 p-4 rounded-2xl flex items-center gap-4">
-            <div class="bg-white p-2.5 rounded-2xl shadow-sm">
-               <span class="text-xl">🏃</span>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-extrabold text-gray-900 mb-2">{{ hardestGoal.title }}</p>
-              <div class="flex items-center gap-3">
-                <div class="flex-1 h-1.5 bg-red-100 rounded-full overflow-hidden">
-                  <div 
-                    class="h-full bg-red-500 rounded-full transition-all duration-500"
-                    :style="{ width: `${hardestGoal.avgAchievementRate}%` }"
-                  ></div>
-                </div>
-                <span class="text-[11px] font-bold text-red-600 whitespace-nowrap">달성률 {{ Math.round(hardestGoal.avgAchievementRate) }}%</span>
+          <div class="flex-1">
+            <p class="text-sm font-extrabold text-gray-900 mb-2">{{ hardestGoal.title }}</p>
+            <div class="flex items-center gap-3">
+              <div class="flex-1 h-1.5 bg-red-100 rounded-full overflow-hidden">
+                <div 
+                  class="h-full bg-red-500 rounded-full transition-all duration-500"
+                  :style="{ width: `${hardestGoal.avgAchievementRate}%` }"
+                ></div>
               </div>
+              <span class="text-[11px] font-bold text-red-600 whitespace-nowrap">달성률 {{ Math.round(hardestGoal.avgAchievementRate) }}%</span>
             </div>
           </div>
         </div>
+      </div>
+
+      <div v-if="!bestGoal && !hardestGoal" class="py-4 text-center text-gray-400 text-sm">
+        이번 달 목표 통계가 없습니다.
       </div>
     </div>
 
@@ -90,7 +58,7 @@
             </svg>
             <span class="text-xs font-bold text-gray-500">목표</span>
           </div>
-          <span class="text-sm font-extrabold text-gray-900">{{ weeklyTotalCount }}<span class="text-xs ml-0.5">개</span></span>
+          <span class="text-sm font-extrabold text-gray-900">{{ weeklyStats.total }}<span class="text-xs ml-0.5">개</span></span>
         </div>
 
         <div class="flex items-center justify-between">
@@ -100,7 +68,7 @@
             </svg>
             <span class="text-xs font-bold text-gray-500">달성</span>
           </div>
-          <span class="text-sm font-extrabold text-green-600">{{ weeklyCompletedCount }}<span class="text-xs ml-0.5">개</span></span>
+          <span class="text-sm font-extrabold text-green-600">{{ weeklyStats.completed }}<span class="text-xs ml-0.5">개</span></span>
         </div>
 
         <div class="flex items-center justify-between">
@@ -111,7 +79,7 @@
             </svg>
             <span class="text-xs font-bold text-gray-500">달성률</span>
           </div>
-          <span class="text-sm font-extrabold text-blue-600">{{ weeklyAchievementRate }}<span class="text-xs ml-0.5">%</span></span>
+          <span class="text-sm font-extrabold text-blue-600">{{ weeklyStats.achievementRate }}<span class="text-xs ml-0.5">%</span></span>
         </div>
       </div>
     </div>
@@ -119,131 +87,40 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useGoalStore } from '@/stores/goal';
+import { useUserStore } from '@/stores/userStore';
+import TodaySummaryCard from './TodaySummaryCard.vue';
 
 const goalStore = useGoalStore();
+const userStore = useUserStore();
 
-// 일일 목표 통계
-const dailyCompletedCount = computed(() => goalStore.dailyGoals.filter(g => g.isCompleted).length);
-const dailyInProgressCount = computed(() => goalStore.dailyGoals.filter(g => !g.isCompleted).length);
-const dailyAchievementRate = computed(() => {
-  const goals = goalStore.dailyGoals;
-  if (goals.length === 0) return 0;
-  const totalPercent = goals.reduce((acc, g) => {
-    const p = g.targetValue > 0 ? (g.progressValue / g.targetValue) : 0;
-    return acc + Math.min(p, 1);
-  }, 0);
-  return Math.round((totalPercent / goals.length) * 100);
-});
+// 베스트/워스트 목표 데이터 로드 (백엔드 API)
+const loadHighlights = async () => {
+  const memberId = userStore.member?.id;
+  if (!memberId) return;
 
-// 주간 목표 통계
-const weeklyTotalCount = computed(() => goalStore.weeklyGoals.length);
-const weeklyCompletedCount = computed(() => goalStore.weeklyGoals.filter(g => g.isCompleted).length);
-const weeklyAchievementRate = computed(() => {
-  if (weeklyTotalCount.value === 0) return 0;
-  return Math.round((weeklyCompletedCount.value / weeklyTotalCount.value) * 100);
-});
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
 
-// Helper to identify goal type (robust check)
-const isDaily = (type) => {
-  if (!type) return false;
-  const t = (typeof type === 'object' ? type.name || type.key || '' : String(type)).toUpperCase();
-  return t === 'DAILY';
+  await goalStore.fetchStatsHighlights(memberId, year, month);
 };
 
-// 베스트/워스트 목표 (월간 통계 기반 - 데일리 목표 한정)
-const bestGoal = computed(() => {
-  const stats = (goalStore.monthlyStats || []).filter(s => s && isDaily(s.goalType));
-  const dailyGoals = (goalStore.dailyGoals || []);
-  
-  // 1. 후보군 생성
-  const candidates = [];
-  const seenIds = new Set();
-
-  // 월간 통계 데이터 추가
-  for (const s of stats) {
-    candidates.push({
-      id: s.goalId,
-      title: s.title,
-      maxStreak: s.maxStreak || 0,
-      avgAchievementRate: s.avgAchievementRate || 0
-    });
-    seenIds.add(Number(s.goalId));
-  }
-
-  // 오늘 목표 중 통계에 아직 없는 것 추가 (Fallback)
-  for (const g of dailyGoals) {
-    if (g && !seenIds.has(Number(g.id))) {
-      const rate = g.targetValue > 0 ? (g.progressValue / g.targetValue) * 100 : 0;
-      candidates.push({
-        id: g.id,
-        title: g.title,
-        maxStreak: g.isCompleted ? 1 : 0,
-        avgAchievementRate: rate
-      });
-    }
-  }
-
-  if (candidates.length === 0) return null;
-
-  // 2. 최선의 목표 찾기 (연속 달성일 우선, 차선으로 달성률)
-  let best = candidates[0];
-  for (let i = 1; i < candidates.length; i++) {
-    const curr = candidates[i];
-    if (curr.maxStreak > best.maxStreak) {
-      best = curr;
-    } else if (curr.maxStreak === best.maxStreak) {
-      if (curr.avgAchievementRate > best.avgAchievementRate) {
-        best = curr;
-      }
-    }
-  }
-  return best;
+onMounted(() => {
+  loadHighlights();
 });
 
-const hardestGoal = computed(() => {
-  const stats = (goalStore.monthlyStats || []).filter(s => s && isDaily(s.goalType));
-  const dailyGoals = (goalStore.dailyGoals || []);
-  
-  const candidates = [];
-  const seenIds = new Set();
-
-  for (const s of stats) {
-    candidates.push({
-      id: s.goalId,
-      title: s.title,
-      maxStreak: s.maxStreak || 0,
-      avgAchievementRate: s.avgAchievementRate || 0
-    });
-    seenIds.add(Number(s.goalId));
-  }
-
-  for (const g of dailyGoals) {
-    if (g && !seenIds.has(Number(g.id))) {
-      const rate = g.targetValue > 0 ? (g.progressValue / g.targetValue) * 100 : 0;
-      candidates.push({
-        id: g.id,
-        title: g.title,
-        maxStreak: 0,
-        avgAchievementRate: rate
-      });
-    }
-  }
-
-  if (candidates.length === 0) return null;
-
-  // 3. 가장 어려운 목표 찾기 (달성률 낮은 순 - 미완료 목표 우선)
-  const incomplete = candidates.filter(c => c.avgAchievementRate < 100);
-  const targetSet = incomplete.length > 0 ? incomplete : candidates;
-
-  let hardest = targetSet[0];
-  for (let i = 1; i < targetSet.length; i++) {
-    if (targetSet[i].avgAchievementRate < hardest.avgAchievementRate) {
-      hardest = targetSet[i];
-    }
-  }
-  return hardest;
+// memberId 변경 시 다시 로드
+watch(() => userStore.member?.id, (newId) => {
+  if (newId) loadHighlights();
 });
+
+// 주간 목표 통계 (Pinia getters - 실시간 반영)
+const weeklyStats = computed(() => goalStore.weeklyStats);
+
+// 베스트/워스트 목표 (백엔드 API)
+const bestGoal = computed(() => goalStore.statsHighlights?.bestGoal ?? null);
+const hardestGoal = computed(() => goalStore.statsHighlights?.hardestGoal ?? null);
 
 </script>

@@ -13,7 +13,7 @@
         </svg>
       </div>
       <button 
-        v-else 
+        v-else-if="!readonly"
         @click="increaseProgress" 
         class="text-green-500 hover:text-green-600 hover:bg-green-50 rounded-full p-1 transition-colors"
         :disabled="isLoading"
